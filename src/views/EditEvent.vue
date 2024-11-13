@@ -1,15 +1,39 @@
 <template>
-  <div>
-    <h1>Edit Event</h1>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Edit Event</h2>
+
     <form @submit.prevent="updateEvent">
-      <input v-model="event.name" placeholder="Event Name" required />
-      <input v-model="event.description" placeholder="Event Description" />
-      <input type="date" v-model="event.startDate" required />
-      <input type="date" v-model="event.endDate" placeholder="End Date" />
-      <input v-model="event.imgUrl" placeholder="Image URL" />
-      <button type="submit">Save</button>
-      <button @click="goBack">Cancel</button>
-      <button @click="deleteEvent">Delete</button>
+      <div class="form-group">
+        <label for="name">Event Name</label>
+        <input type="text" id="name" v-model="event.name" class="form-control" placeholder="Enter event name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" v-model="event.description" class="form-control" placeholder="Enter event description"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" v-model="event.startDate" class="form-control" required />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="endDate">End Date</label>
+          <input type="date" id="endDate" v-model="event.endDate" class="form-control" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="imgUrl">Image URL</label>
+        <input type="url" id="imgUrl" v-model="event.imgUrl" class="form-control" placeholder="Enter image URL" />
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button @click="deleteEvent" class="btn btn-danger">Delete</button>
+        <button @click="goBack" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
     </form>
   </div>
 </template>
