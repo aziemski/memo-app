@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue';
 import EventList from '@/views/EventList.vue';
-
+import AddEvent from '@/views/AddEvent.vue';
+import EditEvent from '@/views/EditEvent.vue';
 
 const routes = [
-    { path: '/', component: HomePage },
-    { path: '/events', component: EventList },
+    { path: '/', component: HomePage, name: 'HomePage'},
+    { path: '/events', component: EventList, name: 'EventList' },
+    { path: '/events/add', component: AddEvent, name: 'AddEvent' },
+    { path: '/events/edit/:id', component: EditEvent, name: 'EditEvent' },
 ];
 
 const router = createRouter({
