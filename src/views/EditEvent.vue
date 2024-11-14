@@ -39,10 +39,12 @@
 </template>
 
 <script>
+import eventService from '@/services/EventService';
+
 export default {
   data() {
     return {
-      event: {}
+      event: {},
     };
   },
   created() {
@@ -50,23 +52,15 @@ export default {
   },
   methods: {
     loadEvent() {
-      const events = JSON.parse(localStorage.getItem('events')) || [];
       const eventId = parseInt(this.$route.params.id);
-      this.event = events.find(evt => evt.id === eventId) || {};
+      this.event = eventService.getEvents().find(evt => evt.id === eventId) || {};
     },
     updateEvent() {
-      const events = JSON.parse(localStorage.getItem('events')) || [];
-      const index = events.findIndex(evt => evt.id === this.event.id);
-      if (index !== -1) {
-        events.splice(index, 1, this.event);
-        localStorage.setItem('events', JSON.stringify(events));
-      }
+      eventService.updateEvent(this.event);
       this.$router.push({ name: 'EventList' });
     },
     deleteEvent() {
-      const events = JSON.parse(localStorage.getItem('events')) || [];
-      const updatedEvents = events.filter(evt => evt.id !== this.event.id);
-      localStorage.setItem('events', JSON.stringify(updatedEvents));
+      eventService.deleteEvent(this.event.id);
       this.$router.push({ name: 'EventList' });
     },
     goBack() {

@@ -5,8 +5,7 @@
     <div class="d-flex justify-content-between mb-4">
       <router-link :to="{ name: 'AddEvent' }" class="btn btn-primary">+ Add Event</router-link>
       <div>
-        <button @click="seedEvents" class="btn btn-secondary mr-2">Seed Events</button>
-        <button @click="seedCategories" class="btn btn-secondary">Seed Categories</button>
+        <button @click="seedEvents" class="btn btn-secondary mr-2">Seed Eevents</button>
       </div>
     </div>
 
@@ -27,37 +26,25 @@
 </template>
 
 <script>
+import eventService from '@/services/EventService';
+
 export default {
   data() {
     return {
       events: [],
       categories: [],
-      eventCategoryConnections: []
     };
   },
   created() {
     this.loadEvents();
     this.loadCategories();
-    this.loadConnections();
   },
   methods: {
     loadEvents() {
-      const savedEvents = localStorage.getItem('events');
-      if (savedEvents) {
-        this.events = JSON.parse(savedEvents);
-      }
+      this.events = eventService.getEvents();
     },
     loadCategories() {
-      const savedCategories = localStorage.getItem('categories');
-      if (savedCategories) {
-        this.categories = JSON.parse(savedCategories);
-      }
-    },
-    loadConnections() {
-      const savedConnections = localStorage.getItem('eventCategoryConnections');
-      if (savedConnections) {
-        this.eventCategoryConnections = JSON.parse(savedConnections);
-      }
+      this.categories = eventService.getCategories();
     },
     seedEvents() {
       const sampleEvents = [
@@ -65,33 +52,30 @@ export default {
         { id: Date.now() + 2, name: 'Sample Event 2', description: 'Description for event 2', startDate: '2024-11-17', endDate: '2024-11-18', imgUrl: 'https://via.placeholder.com/100' },
         { id: Date.now() + 3, name: 'Sample Event 3', description: 'Description for event 3', startDate: '2024-11-19', endDate: '2024-11-20', imgUrl: 'https://via.placeholder.com/100' }
       ];
-      localStorage.setItem('events', JSON.stringify(sampleEvents));
-      this.events = sampleEvents;
-    },
-    seedCategories() {
+
       const sampleCategories = [
         { id: Date.now() + 1, name: 'Work' },
         { id: Date.now() + 2, name: 'Personal' },
         { id: Date.now() + 3, name: 'Urgent' }
       ];
+
       const sampleConnections = [
-        { eventId: this.events[0].id, categoryId: sampleCategories[0].id },
-        { eventId: this.events[1].id, categoryId: sampleCategories[1].id  },
-        { eventId: this.events[2].id, categoryId: sampleCategories[2].id  },
-        { eventId: this.events[1].id, categoryId: sampleCategories[0].id  }
+        { eventId: sampleEvents[0].id, categoryId: sampleCategories[0].id },
+        { eventId: sampleEvents[1].id, categoryId: sampleCategories[1].id },
+        { eventId: sampleEvents[2].id, categoryId: sampleCategories[2].id },
+        { eventId: sampleEvents[1].id, categoryId: sampleCategories[0].id }
       ];
-      localStorage.setItem('categories', JSON.stringify(sampleCategories));
-      localStorage.setItem('eventCategoryConnections', JSON.stringify(sampleConnections));
-      this.categories = sampleCategories;
-      this.eventCategoryConnections = sampleConnections;
+
+      eventService.saveEvents(sampleEvents);
+      eventService.saveCategories(sampleCategories);
+      eventService.saveConnections(sampleConnections);
+
+      this.loadEvents();
+      this.loadCategories();
     },
+
     getCategoriesForEvent(eventId) {
-      const categoryIds = this.eventCategoryConnections
-        .filter(conn => conn.eventId === eventId)
-        .map(conn => conn.categoryId);
-      return this.categories
-        .filter(cat => categoryIds.includes(cat.id))
-        .map(cat => cat.name);
+      return eventService.getCategoriesForEvent(eventId);
     }
   }
 };

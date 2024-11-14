@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import Event from '../models/Event';
+import Event from '@/models/Event';
+import eventService from '@/services/EventService';
 
 export default {
   data() {
@@ -50,9 +51,7 @@ export default {
   },
   methods: {
     addEvent() {
-      const events = JSON.parse(localStorage.getItem('events')) || [];
-      events.push(this.event);
-      localStorage.setItem('events', JSON.stringify(events));
+      eventService.addEvent(this.event);
       this.$router.push({ name: 'EventList' });
     },
     goBack() {
