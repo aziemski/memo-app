@@ -57,14 +57,14 @@ export default {
     },
     updateEvent() {
       eventService.updateEvent(this.event);
-      this.$router.push({ name: 'EventList' });
+      this.$router.push({ name: 'HomePage' });
     },
     deleteEvent() {
       eventService.deleteEvent(this.event.id);
-      this.$router.push({ name: 'EventList' });
+      this.$router.push({ name: 'HomePage' });
     },
     goBack() {
-      this.$router.push({ name: 'EventList' });
+      this.$router.push({ name: 'HomePage' });
     }
   }
 };

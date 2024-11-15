@@ -52,10 +52,10 @@ export default {
   methods: {
     addEvent() {
       eventService.addEvent(this.event);
-      this.$router.push({ name: 'EventList' });
+      this.$router.push({ name: 'HomePage' });
     },
     goBack() {
-      this.$router.push({ name: 'EventList' });
+      this.$router.push({ name: 'HomePage' });
     }
   }
 };

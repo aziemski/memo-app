@@ -1,5 +1,5 @@
 <template>
-  <div class="container my-5">
+  <div class="container my-4">
     <div v-if="events.length === 0" class="alert alert-info text-center">
       No events.
     </div>

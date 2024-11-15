@@ -18,7 +18,7 @@
         </li>
 
 
-        <li v-if="isHome" class="nav-item dropdown">
+        <li v-if="isHomePage" class="nav-item dropdown">
           <form id="categoryForm" @submit.prevent="applyFilters">
             <a
               class="nav-link dropdown-toggle"
@@ -78,7 +78,7 @@
       </ul>
 
       <ul class="navbar-nav ms-auto">
-        <li v-if="isHome" class="nav-item">
+        <li v-if="isHomePage" class="nav-item">
           <button @click="toggleView" class="nav-link btn btn-sm">
             {{ isListView ? 'Timeline' : 'List' }}
           </button>
@@ -98,14 +98,22 @@
 
 <script>
 import { store } from '@/store';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import eventService from '@/services/EventService';
 
 export default {
   name: "AppNavbar",
+  setup() {
+    const route = useRoute();
+    const isHomePage = computed(() => route.name === 'HomePage');
+    return {
+      isHomePage,
+    }
+  },
   data() {
     return {
       isAuthenticated: false,
-      isHome: true,
       categories: [],
       selectedCategories: []
     };
