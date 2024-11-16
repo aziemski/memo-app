@@ -93,9 +93,7 @@
 </template>
 
 <script>
-import { store } from "@/store";
-import bcrypt from "bcryptjs";
-
+import AuthService from "@/services/authService";
 export default {
   data() {
     return {
@@ -118,7 +116,7 @@ export default {
       } else if (!this.validateEmail(this.form.email)) {
         this.errors.push("Invalid email format.");
       }
-      if (store.users.some((user) => user.email === this.form.email)) {
+      if (AuthService.isEmailTaken(this.form.email)) {
         this.errors.push("Email is already registered.");
       }
       if (!this.form.password) {
@@ -131,20 +129,7 @@ export default {
       }
 
       if (this.errors.length === 0) {
-        const hashedPassword = await bcrypt.hash(this.form.password, 10);
-        const now = new Date();
-        const newUser = {
-          name: this.form.name,
-          email: this.form.email,
-          password: hashedPassword,
-          createdAt: now.toISOString(),
-        };
-        store.users.push(newUser);
-        store.currentUser = {
-          ...newUser,
-          lastLoggedInAt:now.toISOString(),
-        }
-        store.isAuthenticated = true;
+        await AuthService.signup(this.form);
         this.$router.push("/");
       }
     },
