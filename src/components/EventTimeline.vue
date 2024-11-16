@@ -10,10 +10,9 @@
 </template>
 
 <script>
-import { Timeline } from '@knight-lab/timelinejs';
+import {Timeline} from '@knight-lab/timelinejs';
 import '@knight-lab/timelinejs/dist/css/timeline.css';
 import eventService from '@/services/EventService';
-
 
 
 export default {
@@ -55,7 +54,7 @@ export default {
           },
           start_date: this.mapToTimelineDate(event.startDate),
           end_date: this.mapToTimelineDate(event.endDate),
-          media: event.imgUrl ? { url: event.imgUrl } : undefined,
+          media: event.imgUrl ? {url: event.imgUrl} : undefined,
           categories: categories,
         };
       });

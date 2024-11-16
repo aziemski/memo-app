@@ -1,16 +1,16 @@
 <template>
   <div>
     <div v-if="isListView">
-      <EventList />
+      <EventList/>
     </div>
     <div v-else>
-      <EventTimeline />
+      <EventTimeline/>
     </div>
   </div>
 </template>
 
 <script>
-import { store } from '@/store';
+import {store} from '@/store';
 
 import EventTimeline from "@/components/EventTimeline.vue";
 import EventList from "@/components/EventList.vue";
@@ -19,7 +19,7 @@ export default {
   components: {
     EventTimeline,
     EventList,
-   },
+  },
   computed: {
     isListView() {
       return store.isListView;

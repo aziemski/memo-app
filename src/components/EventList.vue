@@ -4,19 +4,21 @@
       No events.
     </div>
     <div v-else>
-    <ul class="list-group">
-      <li v-for="evt in events" :key="evt.id" class="list-group-item">
-        <div class="d-flex align-items-center">
-          <img v-if="evt.imgUrl" :src="evt.imgUrl" alt="Event Image" class="img-thumbnail mr-3" style="max-width: 100px;" />
-          <div class="flex-grow-1">
-            <h5 class="mb-1">{{ evt.name }}</h5>
-            <p class="mb-1">{{ evt.startDate }} to {{ evt.endDate }}</p>
-            <small class="text-muted">Categories: {{ getCategoriesForEvent(evt.id).join(', ') }}</small>
+      <ul class="list-group">
+        <li v-for="evt in events" :key="evt.id" class="list-group-item">
+          <div class="d-flex align-items-center">
+            <img v-if="evt.imgUrl" :src="evt.imgUrl" alt="Event Image" class="img-thumbnail mr-3"
+                 style="max-width: 100px;"/>
+            <div class="flex-grow-1">
+              <h5 class="mb-1">{{ evt.name }}</h5>
+              <p class="mb-1">{{ evt.startDate }} to {{ evt.endDate }}</p>
+              <small class="text-muted">Categories: {{ getCategoriesForEvent(evt.id).join(', ') }}</small>
+            </div>
+            <router-link :to="{ name: 'EditEvent', params: { id: evt.id }}" class="btn btn-outline-info ml-3">Edit
+            </router-link>
           </div>
-          <router-link :to="{ name: 'EditEvent', params: { id: evt.id }}" class="btn btn-outline-info ml-3">Edit</router-link>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

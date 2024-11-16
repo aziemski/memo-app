@@ -5,34 +5,35 @@
     <form @submit.prevent="updateEvent">
       <div class="form-group">
         <label for="name">Event Name</label>
-        <input type="text" id="name" v-model="event.name" class="form-control" placeholder="Enter event name" required />
+        <input id="name" v-model="event.name" class="form-control" placeholder="Enter event name" required type="text"/>
       </div>
 
       <div class="form-group">
         <label for="description">Description</label>
-        <textarea id="description" v-model="event.description" class="form-control" placeholder="Enter event description"></textarea>
+        <textarea id="description" v-model="event.description" class="form-control"
+                  placeholder="Enter event description"></textarea>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="startDate">Start Date</label>
-          <input type="date" id="startDate" v-model="event.startDate" class="form-control" required />
+          <input id="startDate" v-model="event.startDate" class="form-control" required type="date"/>
         </div>
         <div class="form-group col-md-6">
           <label for="endDate">End Date</label>
-          <input type="date" id="endDate" v-model="event.endDate" class="form-control" />
+          <input id="endDate" v-model="event.endDate" class="form-control" type="date"/>
         </div>
       </div>
 
       <div class="form-group">
         <label for="imgUrl">Image URL</label>
-        <input type="url" id="imgUrl" v-model="event.imgUrl" class="form-control" placeholder="Enter image URL" />
+        <input id="imgUrl" v-model="event.imgUrl" class="form-control" placeholder="Enter image URL" type="url"/>
       </div>
 
       <div class="d-flex justify-content-between mt-4">
-        <button @click="deleteEvent" class="btn btn-danger">Delete</button>
-        <button @click="goBack" class="btn btn-secondary">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-danger" @click="deleteEvent">Delete</button>
+        <button class="btn btn-secondary" @click="goBack">Cancel</button>
+        <button class="btn btn-primary" type="submit">Save</button>
       </div>
     </form>
   </div>
@@ -57,14 +58,14 @@ export default {
     },
     updateEvent() {
       eventService.updateEvent(this.event);
-      this.$router.push({ name: 'HomePage' });
+      this.$router.push({name: 'HomePage'});
     },
     deleteEvent() {
       eventService.deleteEvent(this.event.id);
-      this.$router.push({ name: 'HomePage' });
+      this.$router.push({name: 'HomePage'});
     },
     goBack() {
-      this.$router.push({ name: 'HomePage' });
+      this.$router.push({name: 'HomePage'});
     }
   }
 };

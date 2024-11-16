@@ -1,6 +1,6 @@
 <template>
-  <AppNavbar />
-  <router-view />
+  <AppNavbar/>
+  <router-view/>
 </template>
 
 <script>
@@ -17,9 +17,9 @@ export default {
 <style>
 
 @media print {
-    .navbar {
-        display: none !important;
-    }
+  .navbar {
+    display: none !important;
+  }
 }
 
 </style>

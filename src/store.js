@@ -1,8 +1,8 @@
-import { reactive } from 'vue';
+import {reactive} from 'vue';
 
 export const store = reactive({
-  isListView: false,
-  toggleView() {
-    this.isListView = !this.isListView;
-  }
+    isListView: false,
+    toggleView() {
+        this.isListView = !this.isListView;
+    }
 });
