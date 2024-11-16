@@ -88,6 +88,9 @@
           <button class="nav-link btn btn-sm" @click="seedEvents">Seed Events</button>
         </li>
         <li class="nav-item">
+          <button class="nav-link btn btn-sm" @click="toggleAuth"> {{ isAuthenticated ? 'Logout' : 'Login' }}</button>
+        </li>
+        <li class="nav-item">
           <a v-if="isAuthenticated" class="nav-link btn btn-primary" href="/me">
             Me
           </a>
@@ -117,7 +120,6 @@ export default {
   },
   data() {
     return {
-      isAuthenticated: true,
       categories: [],
       selectedCategories: []
     };
@@ -128,6 +130,9 @@ export default {
   computed: {
     isListView() {
       return store.isListView;
+    },
+    isAuthenticated() {
+      return store.isAuthenticated;
     }
   },
   methods: {
@@ -136,6 +141,9 @@ export default {
     },
     toggleView() {
       store.toggleView();
+    },
+    toggleAuth() {
+      store.setIsAuthenticated(!store.isAuthenticated)
     },
     addEvent() {
       this.$router.push({name: "AddEvent"});

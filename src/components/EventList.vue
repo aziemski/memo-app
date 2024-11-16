@@ -34,6 +34,7 @@
               </div>
             </div>
             <router-link
+                v-if="isAuthenticated"
                 :to="{ name: 'EditEvent', params: { id: evt.id } }"
                 class="btn btn-outline-info ms-3"
             >
@@ -48,6 +49,7 @@
 
 <script>
 import eventService from "@/services/EventService";
+import {store} from "@/store";
 
 export default {
   data() {
@@ -56,6 +58,11 @@ export default {
       placeholderImage:
           "https://via.placeholder.com/100x100?text=No+Image+Available",
     };
+  },
+  computed: {
+    isAuthenticated() {
+      return store.isAuthenticated;
+    }
   },
   created() {
     this.loadEvents();
