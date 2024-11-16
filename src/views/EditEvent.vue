@@ -88,7 +88,7 @@
           </div>
         </div>
         <div class="mt-2">
-          <a class="text-primary" href="/categories">Manage Categories</a>
+          <router-link class="text-primary" to="/categories">Manage Categories</router-link>
         </div>
       </div>
 

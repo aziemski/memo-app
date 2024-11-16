@@ -18,7 +18,33 @@ class EventService {
     }
 
     saveCategories(categories) {
+        const duplicateName = this.findFirstDuplicateCategoryName(categories);
+        if (duplicateName) {
+            throw new Error(`Category: "${duplicateName}" already exist. Pick different name`);
+        }
+
+        let eventCategories = this.getEventCategories();
+        const newCategoryIds = categories.map(category => category.id);
+        eventCategories = eventCategories.filter(conn => newCategoryIds.includes(conn.categoryId));
+        this.saveEventCategories(eventCategories);
+
         localStorage.setItem(this.categoryKey, JSON.stringify(categories));
+    }
+
+    findFirstDuplicateCategoryName(categories) {
+        const seenNames = new Set();
+
+        for (const category of categories) {
+            const name = category.name;
+
+            if (seenNames.has(name)) {
+                return category.name;
+            }
+
+            seenNames.add(name);
+        }
+
+        return null;
     }
 
     getEventCategories() {
@@ -206,7 +232,7 @@ class EventService {
             {
                 id: 5,
                 name: 'Travel',
-                color: ''
+                color: null,
             },
             {
                 id: 6,
