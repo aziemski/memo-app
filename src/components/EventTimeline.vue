@@ -10,17 +10,23 @@
 </template>
 
 <script>
-import {Timeline} from '@knight-lab/timelinejs';
-import '@knight-lab/timelinejs/dist/css/timeline.css';
-import eventService from '@/services/EventService';
+import { Timeline } from "@knight-lab/timelinejs";
+import "@knight-lab/timelinejs/dist/css/timeline.css";
 
+import eventService from "@/services/EventService";
+import { store } from "@/store";
 
 export default {
   name: "EventTimeline",
   data() {
     return {
-      events: []
+      events: [],
     };
+  },
+  computed: {
+    isAuthenticated() {
+      return store.isAuthenticated;
+    }
   },
   created() {
     this.loadEvents();
@@ -31,22 +37,36 @@ export default {
         title: {
           text: {
             headline: "My Memo",
-            text: "Enjoy."
-          }
+            text: "Enjoy.",
+          },
         },
-        events: this.events
+        events: this.events,
       });
     }
   },
   methods: {
     loadEvents() {
-      const events = eventService.getEvents();
+      const events = eventService.getEventsWithCategories();
       this.events = this.mapToTimelineEvent(events);
     },
     mapToTimelineEvent(src) {
-      const out = src.map(event => {
-        const categories = eventService.getCategoriesForEvent(event.id);
-        const text = `${event.description} ${categories.length ? `<br>Categories: ${categories.join(', ')}` : ''}`
+      return src.map((event) => {
+        const categories = event.categories.map(
+            (cat) =>
+                `<span class="badge rounded-pill" style="background-color: ${
+                    cat.color || "#6c757d"
+                }; color: ${cat.color ? "#fff" : "#000"}; margin-right: 5px;">
+              ${cat.name}
+            </span>`
+        );
+        const editButton = this.isAuthenticated
+            ? `<a href="/events/edit/${event.id}" target="_self" class="text-secondary text-decoration-none mt-2 d-inline-block">Edit</a>`
+            : "";
+        const text = `
+          <p>${event.description || "No description available."}</p>
+          <p>${categories.join(" ")}</p>
+          ${editButton}
+        `;
         return {
           text: {
             headline: event.name,
@@ -54,21 +74,19 @@ export default {
           },
           start_date: this.mapToTimelineDate(event.startDate),
           end_date: this.mapToTimelineDate(event.endDate),
-          media: event.imgUrl ? {url: event.imgUrl} : undefined,
-          categories: categories,
+          media: event.imgUrl ? { url: event.imgUrl } : undefined,
         };
       });
-
-      return out
     },
     mapToTimelineDate(dateStr) {
       const date = new Date(dateStr);
       return {
         year: date.getFullYear(),
         month: date.getMonth() + 1,
-        day: date.getDate()
-      }
-    }
-  }
+        day: date.getDate(),
+      };
+    },
+  },
 };
 </script>
+

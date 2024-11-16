@@ -84,11 +84,11 @@
           </button>
         </li>
 
-        <li v-if="isHomePage" class="nav-item">
-          <button class="nav-link btn btn-sm" @click="seedEvents">Seed Events</button>
+        <li class="d-flex align-items-center">
+          <button class="btn btn-outline-danger" @click="seedEvents">Seed Events</button>
         </li>
-        <li class="nav-item">
-          <button class="nav-link btn btn-sm" @click="toggleAuth"> {{ isAuthenticated ? 'Logout' : 'Login' }}</button>
+        <li class="d-flex align-items-center">
+          <button class="btn btn-outline-danger" @click="toggleAuth"> {{ isAuthenticated ? 'Logout' : 'Login' }}</button>
         </li>
         <li class="nav-item">
           <a v-if="isAuthenticated" class="nav-link btn btn-primary" href="/me">
