@@ -11,20 +11,25 @@ export const store = reactive({
     isAuthenticated:
         savedState.isAuthenticated !== undefined
             ? savedState.isAuthenticated : false,
+    users:
+        savedState.users !== undefined
+            ? savedState.users : [],
+
+    currentUser:
+        savedState.currentUser !== undefined
+            ? savedState.currentUser : [],
 
     toggleView() {
         this.isListView = !this.isListView;
-    },
-
-    setIsAuthenticated(status) {
-        this.isAuthenticated = status;
     },
 });
 
 watch(
     () => ({
         isListView: store.isListView,
-        isAuthenticated: store.isAuthenticated
+        isAuthenticated: store.isAuthenticated,
+        users: store.users,
+        currentUser: store.currentUser,
     }),
     (newValues) => {
         localStorage.setItem("store", JSON.stringify(newValues));

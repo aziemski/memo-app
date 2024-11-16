@@ -143,7 +143,7 @@ export default {
       store.toggleView();
     },
     toggleAuth() {
-      store.setIsAuthenticated(!store.isAuthenticated)
+      store.isAuthenticated = !this.isAuthenticated;
     },
     addEvent() {
       this.$router.push({name: "AddEvent"});

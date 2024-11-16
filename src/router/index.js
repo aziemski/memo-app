@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomePage from '@/views/HomePage.vue';
 import EditEvent from '@/views/EditEvent.vue';
+import UserSignup from '@/views/UserSignup.vue';
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         component: EditEvent,
         props: {mode: 'edit'},
         name: 'EditEvent'
+    },
+    {
+        path: '/signup',
+        component: UserSignup,
+        name: 'UserSignup'
     },
 ];
 
