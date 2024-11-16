@@ -88,15 +88,18 @@
           <button class="btn btn-outline-danger" @click="seedEvents">Seed Events</button>
         </li>
         <li class="d-flex align-items-center">
-          <button class="btn btn-outline-danger" @click="toggleAuth"> {{ isAuthenticated ? 'Logout' : 'Login' }}</button>
+          <button class="btn btn-outline-danger" @click="toggleAuth"> {{
+              isAuthenticated ? 'Logout' : 'Login'
+            }}
+          </button>
         </li>
         <li class="nav-item">
-          <a v-if="isAuthenticated" class="nav-link btn btn-primary" href="/me">
+          <router-link v-if="isAuthenticated" class="nav-link btn btn-primary" to="/me">
             Me
-          </a>
-          <a v-else class="nav-link btn btn-primary" href="/login">
+          </router-link>
+          <router-link v-else class="nav-link btn btn-primary" to="/login">
             Login
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>

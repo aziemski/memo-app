@@ -1,4 +1,4 @@
-import { store } from "@/store";
+import {store} from "@/store";
 import bcrypt from "bcryptjs";
 
 const AuthService = {
