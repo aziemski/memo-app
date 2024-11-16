@@ -8,7 +8,7 @@
       </ul>
     </div>
 
-    <form class="border p-4 rounded bg-light" @submit.prevent="updateEvent">
+    <form class="border p-4 rounded bg-light" @submit.prevent="upsertEvent">
       <div class="mb-3">
         <label class="form-label" for="name">Name</label>
         <input
@@ -154,11 +154,18 @@ export default {
     loadCategories() {
       this.categories = eventService.getCategories();
     },
-    updateEvent() {
+    upsertEvent() {
       this.errors = [];
       if (!this.event.name) this.errors.push("Event name is required.");
       if (!this.event.startDate) this.errors.push("Start date is required.");
       if (!this.event.endDate) this.errors.push("End date is required.");
+      if (this.event.startDate && this.event.endDate) {
+        const startDate = new Date(this.event.startDate);
+        const endDate = new Date(this.event.endDate);
+        if (endDate < startDate) {
+          this.errors.push("End date cannot be before start date.");
+        }
+      }
 
       if (this.errors.length === 0) {
         const updatedEvent = {
