@@ -83,6 +83,10 @@
             {{ isListView ? 'Timeline' : 'List' }}
           </button>
         </li>
+
+        <li v-if="isHomePage" class="nav-item">
+          <button @click="seedEvents" class="nav-link btn btn-sm">Seed Events</button>
+        </li>
         <li class="nav-item">
           <a v-if="isAuthenticated" href="/me" class="nav-link btn btn-primary">
             Me
@@ -142,6 +146,10 @@ export default {
     clearFilters() {
       this.selectedCategories = [];
       console.log("Filters cleared.");
+    },
+    seedEvents() {
+      eventService.seedData();
+      window.location.reload();
     }
   }
 };
