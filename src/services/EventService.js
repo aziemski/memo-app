@@ -67,23 +67,72 @@ class EventService {
             .map(category => category.name);
     }
 
+    getEventsWithCategories() {
+        const events = this.getEvents();
+        const categories = this.getCategories();
+        const eventCategories = this.getEventCategories();
+
+        return events.map(event => {
+            const eventCategoryIds = eventCategories
+                .filter(ec => ec.eventId === event.id)
+                .map(ec => ec.categoryId);
+
+            const eventCategoriesList = categories.filter(category =>
+                eventCategoryIds.includes(category.id)
+            );
+
+            return {
+                ...event,
+                categories: eventCategoriesList,
+            };
+        });
+    }
+
+    findEventWithCategories(eventId) {
+        return this.getEventsWithCategories()
+            .find(evt => evt.id === eventId) || {};
+    }
+
+    updateEventWithCategories(updatedEvent) {
+        const events = this.getEvents();
+        const index = events.findIndex(event => event.id === updatedEvent.id);
+        if (index !== -1) {
+            const {...eventData} = updatedEvent;
+            events[index] = eventData;
+            this.saveEvents(events);
+        }
+
+        let eventCategories = this.getEventCategories();
+        eventCategories = eventCategories.filter(ec => ec.eventId !== updatedEvent.id);
+
+        updatedEvent.categories.forEach(category => {
+            eventCategories.push({eventId: updatedEvent.id, categoryId: category.id});
+        });
+
+        this.saveEventCategories(eventCategories);
+    }
+
+
     seedData() {
         const sampleEvents = [
             {
-                id: Date.now() + 1, name: 'Sample Event 1',
+                id: 1,
+                name: 'Sample Event 1',
                 description: 'Description for event 1',
-                startDate: '2024-11-15', endDate: '2024-11-16', imgUrl: 'https://via.placeholder.com/100'
+                startDate: '2024-11-15',
+                endDate: '2024-11-16',
+                imgUrl: 'https://via.placeholder.com/100'
             },
             {
-                id: Date.now() + 2,
+                id: 2,
                 name: 'Sample Event 2',
                 description: 'Description for event 2',
-                startDate: new Date('2024-11-17'),
+                startDate: '2024-11-17',
                 endDate: '2024-11-18',
                 imgUrl: 'https://via.placeholder.com/100'
             },
             {
-                id: Date.now() + 3,
+                id: 3,
                 name: 'Sample Event 3',
                 description: 'Description for event 3',
                 startDate: '2024-11-19',
@@ -93,16 +142,53 @@ class EventService {
         ];
 
         const sampleCategories = [
-            {id: Date.now() + 1, name: 'Work'},
-            {id: Date.now() + 2, name: 'Personal'},
-            {id: Date.now() + 3, name: 'Urgent'}
+            {
+                id: 1,
+                name: 'Technology',
+                color: '#3498db'
+            },
+            {
+                id: 2, name: 'Health',
+                color: '#2ecc71'
+            },
+            {
+                id: 3, name: 'Education',
+                color: '#e74c3c'
+            },
+            {
+                id: 4,
+                name: 'Sports',
+                color: '#f1c40f'
+            },
+            {
+                id: 5,
+                name: 'Travel',
+                color: ''
+            },
+            {
+                id: 6,
+                name: 'Food',
+                color: '#8e44ad'
+            },
         ];
 
         const sampleEventCategories = [
-            {eventId: sampleEvents[0].id, categoryId: sampleCategories[0].id},
-            {eventId: sampleEvents[1].id, categoryId: sampleCategories[1].id},
-            {eventId: sampleEvents[2].id, categoryId: sampleCategories[2].id},
-            {eventId: sampleEvents[1].id, categoryId: sampleCategories[0].id}
+            {
+                eventId: sampleEvents[0].id,
+                categoryId: sampleCategories[0].id
+            },
+            {
+                eventId: sampleEvents[1].id,
+                categoryId: sampleCategories[1].id
+            },
+            {
+                eventId: sampleEvents[2].id,
+                categoryId: sampleCategories[2].id
+            },
+            {
+                eventId: sampleEvents[1].id,
+                categoryId: sampleCategories[0].id
+            }
         ];
 
         this.saveEvents(sampleEvents);
