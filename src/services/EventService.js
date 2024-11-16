@@ -112,6 +112,49 @@ class EventService {
         this.saveEventCategories(eventCategories);
     }
 
+    upsertEventWithCategories(eventWithCategories) {
+        const events = this.getEvents();
+        const eventCategories = this.getEventCategories();
+
+        if (!eventWithCategories.id || !events.some(e => e.id === eventWithCategories.id)) {
+            eventWithCategories.id = Date.now();
+
+            events.push({
+                id: eventWithCategories.id,
+                name: eventWithCategories.name,
+                description: eventWithCategories.description,
+                startDate: eventWithCategories.startDate,
+                endDate: eventWithCategories.endDate,
+                imgUrl: eventWithCategories.imgUrl,
+            });
+
+            eventWithCategories.categories.forEach(category => {
+                eventCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
+            });
+        } else {
+            const eventIndex = events.findIndex(e => e.id === eventWithCategories.id);
+            if (eventIndex !== -1) {
+                events[eventIndex] = {
+                    id: eventWithCategories.id,
+                    name: eventWithCategories.name,
+                    description: eventWithCategories.description,
+                    startDate: eventWithCategories.startDate,
+                    endDate: eventWithCategories.endDate,
+                    imgUrl: eventWithCategories.imgUrl,
+                };
+            }
+
+            const filteredCategories = eventCategories.filter(ec => ec.eventId !== eventWithCategories.id);
+            eventWithCategories.categories.forEach(category => {
+                filteredCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
+            });
+
+            this.saveEventCategories(filteredCategories);
+        }
+
+        this.saveEvents(events);
+    }
+
 
     seedData() {
         const sampleEvents = [

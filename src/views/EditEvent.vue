@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h2 class="text-center mb-4">Edit Event</h2>
+    <h2 class="text-center mb-4">{{ mode === 'edit' ? 'Edit Event' : 'Add Event' }}</h2>
 
     <div v-if="errors.length" class="alert alert-danger">
       <ul>
@@ -93,9 +93,15 @@
       </div>
 
       <div class="d-flex justify-content-end gap-2">
-        <button class="btn btn-danger" @click="deleteEvent">Delete</button>
-        <button class="btn btn-secondary" @click="goBack">Cancel</button>
-        <button class="btn btn-primary" type="submit">Save</button>
+        <button
+            v-if="mode === 'edit'"
+            class="btn btn-danger"
+            @click="deleteEvent">Delete</button>
+        <button
+            class="btn btn-secondary"
+            @click="goBack">Cancel</button>
+        <button
+            class="btn btn-primary" type="submit">Save</button>
       </div>
     </form>
   </div>
@@ -105,6 +111,12 @@
 import eventService from "@/services/EventService";
 
 export default {
+  props: {
+    mode: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       event: {
@@ -120,8 +132,10 @@ export default {
     };
   },
   created() {
-    this.loadEvent();
     this.loadCategories();
+    if (this.mode === "edit") {
+      this.loadEvent();
+    }
   },
   methods: {
     loadEvent() {
@@ -150,7 +164,7 @@ export default {
               this.categories.find((cat) => cat.id === catId)
           ),
         };
-        eventService.updateEventWithCategories(updatedEvent);
+        eventService.upsertEventWithCategories(updatedEvent);
         this.$router.push({ name: "HomePage" });
       }
     },

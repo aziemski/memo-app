@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand navbar-light bg-light sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="/">
+      <router-link :to="{ name: 'HomePage' }" class="navbar-brand">
         <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
           <title>Memo App</title>
           <g fill="#000000">
@@ -10,7 +10,7 @@
             />
           </g>
         </svg>
-      </a>
+      </router-link>
 
       <ul class="navbar-nav me-auto">
         <li v-if="isAuthenticated" class="d-flex align-items-center">
@@ -117,7 +117,7 @@ export default {
   },
   data() {
     return {
-      isAuthenticated: false,
+      isAuthenticated: true,
       categories: [],
       selectedCategories: []
     };
@@ -138,7 +138,7 @@ export default {
       store.toggleView();
     },
     addEvent() {
-      console.log("Add event");
+      this.$router.push({ name: "AddEvent" });
     },
     applyFilters() {
       console.log("Filters applied:", this.selectedCategories);
