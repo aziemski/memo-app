@@ -8,9 +8,9 @@
       </ul>
     </div>
 
-    <form @submit.prevent="updateEvent" class="border p-4 rounded bg-light">
+    <form class="border p-4 rounded bg-light" @submit.prevent="updateEvent">
       <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
+        <label class="form-label" for="name">Name</label>
         <input
             id="name"
             v-model="event.name"
@@ -21,7 +21,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
+        <label class="form-label" for="description">Description</label>
         <textarea
             id="description"
             v-model="event.description"
@@ -32,7 +32,7 @@
 
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="startDate" class="form-label">Start Date</label>
+          <label class="form-label" for="startDate">Start Date</label>
           <input
               id="startDate"
               v-model="event.startDate"
@@ -41,7 +41,7 @@
           />
         </div>
         <div class="col-md-6 mb-3">
-          <label for="endDate" class="form-label">End Date</label>
+          <label class="form-label" for="endDate">End Date</label>
           <input
               id="endDate"
               v-model="event.endDate"
@@ -52,7 +52,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="imgUrl" class="form-label">Image URL</label>
+        <label class="form-label" for="imgUrl">Image URL</label>
         <input
             id="imgUrl"
             v-model="event.imgUrl"
@@ -71,24 +71,24 @@
               class="form-check form-check-inline"
           >
             <input
-                type="checkbox"
                 :id="'category' + category.id"
                 v-model="event.categories"
                 :value="category.id"
                 class="form-check-input"
+                type="checkbox"
             />
             <label
-                :for="'category' + category.id"
-                class="form-check-label badge rounded-pill"
                 :class="category.color ? 'text-light' : 'text-dark'"
+                :for="'category' + category.id"
                 :style="category.color ? { backgroundColor: category.color, padding: '8px' } : {}"
+                class="form-check-label badge rounded-pill"
             >
               {{ category.name }}
             </label>
           </div>
         </div>
         <div class="mt-2">
-          <a href="/categories" class="text-primary">Manage Categories</a>
+          <a class="text-primary" href="/categories">Manage Categories</a>
         </div>
       </div>
 
@@ -96,12 +96,15 @@
         <button
             v-if="mode === 'edit'"
             class="btn btn-danger"
-            @click="deleteEvent">Delete</button>
+            @click="deleteEvent">Delete
+        </button>
         <button
             class="btn btn-secondary"
-            @click="goBack">Cancel</button>
+            @click="goBack">Cancel
+        </button>
         <button
-            class="btn btn-primary" type="submit">Save</button>
+            class="btn btn-primary" type="submit">Save
+        </button>
       </div>
     </form>
   </div>
@@ -165,15 +168,15 @@ export default {
           ),
         };
         eventService.upsertEventWithCategories(updatedEvent);
-        this.$router.push({ name: "HomePage" });
+        this.$router.push({name: "HomePage"});
       }
     },
     deleteEvent() {
       eventService.deleteEvent(this.event.id);
-      this.$router.push({ name: "HomePage" });
+      this.$router.push({name: "HomePage"});
     },
     goBack() {
-      this.$router.push({ name: "HomePage" });
+      this.$router.push({name: "HomePage"});
     },
   },
 };

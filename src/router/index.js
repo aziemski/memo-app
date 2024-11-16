@@ -11,13 +11,13 @@ const routes = [
     {
         path: '/events/add',
         component: EditEvent,
-        props: { mode: 'add' },
+        props: {mode: 'add'},
         name: 'AddEvent'
     },
     {
         path: '/events/edit/:id',
         component: EditEvent,
-        props: { mode: 'edit' },
+        props: {mode: 'edit'},
         name: 'EditEvent'
     },
 ];

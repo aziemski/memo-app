@@ -129,7 +129,7 @@ class EventService {
             });
 
             eventWithCategories.categories.forEach(category => {
-                eventCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
+                eventCategories.push({eventId: eventWithCategories.id, categoryId: category.id});
             });
         } else {
             const eventIndex = events.findIndex(e => e.id === eventWithCategories.id);
@@ -146,7 +146,7 @@ class EventService {
 
             const filteredCategories = eventCategories.filter(ec => ec.eventId !== eventWithCategories.id);
             eventWithCategories.categories.forEach(category => {
-                filteredCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
+                filteredCategories.push({eventId: eventWithCategories.id, categoryId: category.id});
             });
 
             this.saveEventCategories(filteredCategories);

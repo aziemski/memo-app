@@ -138,7 +138,7 @@ export default {
       store.toggleView();
     },
     addEvent() {
-      this.$router.push({ name: "AddEvent" });
+      this.$router.push({name: "AddEvent"});
     },
     applyFilters() {
       console.log("Filters applied:", this.selectedCategories);
