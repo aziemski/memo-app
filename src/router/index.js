@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '@/views/HomePage.vue';
-import CategoryEdit from '@/views/CategoryEdit.vue';
-import CategoryList from '@/views/CategoryList.vue';
-import EditEvent from '@/views/EditEvent.vue';
-import UserLogin from '@/views/UserLogin.vue';
-import UserProfile from '@/views/UserProfile.vue';
-import UserSignup from '@/views/UserSignup.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import HomePage from '@/views/HomePage.vue'
+import CategoryEdit from '@/views/CategoryEdit.vue'
+import CategoryList from '@/views/CategoryList.vue'
+import EditEvent from '@/views/EditEvent.vue'
+import UserLogin from '@/views/UserLogin.vue'
+import UserProfile from '@/views/UserProfile.vue'
+import UserSignup from '@/views/UserSignup.vue'
 
 const routes = [
   {
@@ -50,11 +50,11 @@ const routes = [
     component: UserSignup,
     name: 'UserSignup',
   },
-];
+]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
 export default router

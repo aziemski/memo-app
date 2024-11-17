@@ -2,12 +2,7 @@
   <nav class="navbar navbar-expand navbar-light bg-light sticky-top">
     <div class="container">
       <router-link :to="{ name: 'HomePage' }" class="navbar-brand">
-        <svg
-          height="24"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
           <title>Memo App</title>
           <g fill="#000000">
             <path
@@ -19,9 +14,7 @@
 
       <ul class="navbar-nav me-auto">
         <li v-if="isAuthenticated" class="d-flex align-items-center">
-          <button class="btn btn-sm btn-primary" @click="addEvent">
-            + Add Event
-          </button>
+          <button class="btn btn-sm btn-primary" @click="addEvent">+ Add Event</button>
         </li>
 
         <li v-if="isHomePage" class="nav-item dropdown">
@@ -42,11 +35,7 @@
               data-bs-auto-close="outside"
               style="min-width: 200px"
             >
-              <li
-                v-for="category in categories"
-                :key="category.id"
-                class="dropdown-item"
-              >
+              <li v-for="category in categories" :key="category.id" class="dropdown-item">
                 <div class="form-check">
                   <input
                     :id="'category' + category.id"
@@ -55,10 +44,7 @@
                     class="form-check-input"
                     type="checkbox"
                   />
-                  <label
-                    :for="'category' + category.id"
-                    class="form-check-label"
-                  >
+                  <label :for="'category' + category.id" class="form-check-label">
                     {{ category.name }}
                   </label>
                 </div>
@@ -68,32 +54,18 @@
               <li>
                 <div class="mb-2">
                   <label class="form-label" for="fromDate">From</label>
-                  <input
-                    id="fromDate"
-                    v-model="timeRange.from"
-                    class="form-control"
-                    type="date"
-                  />
+                  <input id="fromDate" v-model="timeRange.from" class="form-control" type="date" />
                 </div>
                 <div>
                   <label class="form-label" for="toDate">To</label>
-                  <input
-                    id="toDate"
-                    v-model="timeRange.to"
-                    class="form-control"
-                    type="date"
-                  />
+                  <input id="toDate" v-model="timeRange.to" class="form-control" type="date" />
                 </div>
               </li>
 
               <li class="dropdown-divider"></li>
               <li class="d-flex justify-content-end gap-2">
-                <button class="btn btn-sm btn-secondary" @click="clearFilters">
-                  Clear
-                </button>
-                <button class="btn btn-sm btn-primary" type="submit">
-                  Apply
-                </button>
+                <button class="btn btn-sm btn-secondary" @click="clearFilters">Clear</button>
+                <button class="btn btn-sm btn-primary" type="submit">Apply</button>
               </li>
             </ul>
           </form>
@@ -108,16 +80,10 @@
         </li>
 
         <li class="nav-item">
-          <router-link
-            v-if="isAuthenticated"
-            class="nav-link btn btn-primary"
-            to="/me"
-          >
+          <router-link v-if="isAuthenticated" class="nav-link btn btn-primary" to="/me">
             Me
           </router-link>
-          <router-link v-else class="nav-link btn btn-primary" to="/login">
-            Login
-          </router-link>
+          <router-link v-else class="nav-link btn btn-primary" to="/login"> Login </router-link>
         </li>
       </ul>
     </div>
@@ -125,58 +91,58 @@
 </template>
 
 <script>
-  import AuthService from '@/services/authService';
-  import { store } from '@/store';
-  import { computed } from 'vue';
-  import { useRoute } from 'vue-router';
-  import EventService from '@/services/eventService';
+import AuthService from '@/services/authService'
+import { store } from '@/store'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import EventService from '@/services/eventService'
 
-  export default {
-    name: 'AppNavbar',
-    setup() {
-      const route = useRoute();
-      const isHomePage = computed(() => route.name === 'HomePage');
-      return {
-        isHomePage,
-      };
+export default {
+  name: 'AppNavbar',
+  setup() {
+    const route = useRoute()
+    const isHomePage = computed(() => route.name === 'HomePage')
+    return {
+      isHomePage,
+    }
+  },
+  data() {
+    return {
+      categories: [],
+      selectedCategories: store.filters.selectedCategories,
+      timeRange: { ...store.filters.timeRange },
+    }
+  },
+  created() {
+    this.loadCategories()
+  },
+  computed: {
+    isListView() {
+      return store.isListView
     },
-    data() {
-      return {
-        categories: [],
-        selectedCategories: store.filters.selectedCategories,
-        timeRange: { ...store.filters.timeRange },
-      };
+    isAuthenticated() {
+      return AuthService.isAuthenticated()
     },
-    created() {
-      this.loadCategories();
+  },
+  methods: {
+    loadCategories() {
+      this.categories = EventService.getCategories()
     },
-    computed: {
-      isListView() {
-        return store.isListView;
-      },
-      isAuthenticated() {
-        return AuthService.isAuthenticated();
-      },
+    toggleView() {
+      store.toggleView()
     },
-    methods: {
-      loadCategories() {
-        this.categories = EventService.getCategories();
-      },
-      toggleView() {
-        store.toggleView();
-      },
-      addEvent() {
-        this.$router.push({ name: 'AddEvent' });
-      },
-      applyFilters() {
-        store.setFilterSelectedCategories(this.selectedCategories);
-        store.setFilterTimeRange(this.timeRange);
-      },
-      clearFilters() {
-        this.selectedCategories = [];
-        this.timeRange = { from: null, to: null };
-        store.clearFilters();
-      },
+    addEvent() {
+      this.$router.push({ name: 'AddEvent' })
     },
-  };
+    applyFilters() {
+      store.setFilterSelectedCategories(this.selectedCategories)
+      store.setFilterTimeRange(this.timeRange)
+    },
+    clearFilters() {
+      this.selectedCategories = []
+      this.timeRange = { from: null, to: null }
+      store.clearFilters()
+    },
+  },
+}
 </script>

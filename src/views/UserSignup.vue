@@ -111,53 +111,53 @@
 </template>
 
 <script>
-  import AuthService from '@/services/authService';
+import AuthService from '@/services/authService'
 
-  export default {
-    data() {
-      return {
-        form: {
-          name: '',
-          email: '',
-          password: '',
-          passwordConfirmation: '',
-        },
-        errors: [],
-      };
+export default {
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
+      },
+      errors: [],
+    }
+  },
+
+  methods: {
+    async handleSignup() {
+      this.errors = []
+
+      if (!this.form.name) this.errors.push('Name is required.')
+      if (!this.form.email) {
+        this.errors.push('Email is required.')
+      } else if (!this.validateEmail(this.form.email)) {
+        this.errors.push('Invalid email format.')
+      }
+      if (AuthService.isEmailTaken(this.form.email)) {
+        this.errors.push('Email is already registered.')
+      }
+      if (!this.form.password) {
+        this.errors.push('Password is required.')
+      } else if (this.form.password.length < 8) {
+        this.errors.push('Password must be at least 8 characters.')
+      }
+      if (this.form.password !== this.form.passwordConfirmation) {
+        this.errors.push('Passwords do not match.')
+      }
+
+      if (this.errors.length === 0) {
+        await AuthService.signup(this.form)
+        this.$router.push('/')
+      }
     },
 
-    methods: {
-      async handleSignup() {
-        this.errors = [];
-
-        if (!this.form.name) this.errors.push('Name is required.');
-        if (!this.form.email) {
-          this.errors.push('Email is required.');
-        } else if (!this.validateEmail(this.form.email)) {
-          this.errors.push('Invalid email format.');
-        }
-        if (AuthService.isEmailTaken(this.form.email)) {
-          this.errors.push('Email is already registered.');
-        }
-        if (!this.form.password) {
-          this.errors.push('Password is required.');
-        } else if (this.form.password.length < 8) {
-          this.errors.push('Password must be at least 8 characters.');
-        }
-        if (this.form.password !== this.form.passwordConfirmation) {
-          this.errors.push('Passwords do not match.');
-        }
-
-        if (this.errors.length === 0) {
-          await AuthService.signup(this.form);
-          this.$router.push('/');
-        }
-      },
-
-      validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-      },
+    validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      return re.test(email)
     },
-  };
+  },
+}
 </script>

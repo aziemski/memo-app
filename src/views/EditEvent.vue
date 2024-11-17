@@ -35,21 +35,11 @@
       <div class="row">
         <div class="col-md-6 mb-3">
           <label class="form-label" for="startDate">Start Date</label>
-          <input
-            id="startDate"
-            v-model="event.startDate"
-            class="form-control"
-            type="date"
-          />
+          <input id="startDate" v-model="event.startDate" class="form-control" type="date" />
         </div>
         <div class="col-md-6 mb-3">
           <label class="form-label" for="endDate">End Date</label>
-          <input
-            id="endDate"
-            v-model="event.endDate"
-            class="form-control"
-            type="date"
-          />
+          <input id="endDate" v-model="event.endDate" class="form-control" type="date" />
         </div>
       </div>
 
@@ -82,11 +72,7 @@
             <label
               :class="category.color ? 'text-light' : 'text-dark'"
               :for="'category' + category.id"
-              :style="
-                category.color
-                  ? { backgroundColor: category.color, padding: '8px' }
-                  : {}
-              "
+              :style="category.color ? { backgroundColor: category.color, padding: '8px' } : {}"
               class="form-check-label badge rounded-pill"
             >
               {{ category.name }}
@@ -94,20 +80,12 @@
           </div>
         </div>
         <div class="mt-2">
-          <router-link class="text-primary" to="/categories"
-            >Manage Categories</router-link
-          >
+          <router-link class="text-primary" to="/categories">Manage Categories</router-link>
         </div>
       </div>
 
       <div class="d-flex justify-content-end gap-2">
-        <button
-          v-if="mode === 'edit'"
-          class="btn btn-danger"
-          @click="deleteEvent"
-        >
-          Delete
-        </button>
+        <button v-if="mode === 'edit'" class="btn btn-danger" @click="deleteEvent">Delete</button>
         <button class="btn btn-secondary" @click="goBack">Cancel</button>
         <button class="btn btn-primary" type="submit">Save</button>
       </div>
@@ -116,102 +94,101 @@
 </template>
 
 <script>
-  import EventService from '@/services/eventService';
-  import AuthService from '@/services/authService';
+import EventService from '@/services/eventService'
+import AuthService from '@/services/authService'
 
-  export default {
-    props: {
-      mode: {
-        type: String,
-        required: true,
-      },
+export default {
+  props: {
+    mode: {
+      type: String,
+      required: true,
     },
+  },
 
-    data() {
-      return {
-        event: {
-          name: '',
-          description: '',
-          startDate: '',
-          endDate: '',
-          imgUrl: '',
-          categories: [],
-        },
+  data() {
+    return {
+      event: {
+        name: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        imgUrl: '',
         categories: [],
-        errors: [],
-      };
-    },
+      },
+      categories: [],
+      errors: [],
+    }
+  },
 
-    created() {
-      this.auth();
-      this.loadCategories();
-      if (this.mode === 'edit') {
-        this.loadEvent();
+  created() {
+    this.auth()
+    this.loadCategories()
+    if (this.mode === 'edit') {
+      this.loadEvent()
+    }
+  },
+
+  methods: {
+    auth() {
+      if (!AuthService.isAuthenticated()) {
+        this.$router.push('/login')
       }
     },
 
-    methods: {
-      auth() {
-        if (!AuthService.isAuthenticated()) {
-          this.$router.push('/login');
-        }
-      },
+    loadEvent() {
+      const eventId = parseInt(this.$route.params.id)
+      const eventWithCategories = EventService.findEventWithCategories(eventId)
 
-      loadEvent() {
-        const eventId = parseInt(this.$route.params.id);
-        const eventWithCategories =
-          EventService.findEventWithCategories(eventId);
+      if (!eventWithCategories) {
+        this.errors.push('Event not found.')
+        return
+      }
 
-        if (!eventWithCategories) {
-          this.errors.push('Event not found.');
-          return;
-        }
-
-        this.event = {
-          ...eventWithCategories,
-          categories: Array.isArray(eventWithCategories.categories)
-            ? eventWithCategories.categories.map((cat) => cat.id)
-            : [],
-        };
-      },
-
-      loadCategories() {
-        this.categories = EventService.getCategories();
-      },
-
-      upsertEvent() {
-        this.errors = [];
-        if (!this.event.name) this.errors.push('Event name is required.');
-        if (!this.event.startDate) this.errors.push('Start date is required.');
-        if (!this.event.endDate) this.errors.push('End date is required.');
-        if (this.event.startDate && this.event.endDate) {
-          const startDate = new Date(this.event.startDate);
-          const endDate = new Date(this.event.endDate);
-          if (endDate < startDate) {
-            this.errors.push('End date cannot be before start date.');
-          }
-        }
-
-        if (this.errors.length === 0) {
-          const updatedEvent = {
-            ...this.event,
-            categories: this.event.categories.map((catId) =>
-              this.categories.find((cat) => cat.id === catId),
-            ),
-          };
-          EventService.upsertEventWithCategories(updatedEvent);
-          this.$router.push({ name: 'HomePage' });
-        }
-      },
-
-      deleteEvent() {
-        EventService.deleteEvent(this.event.id);
-        this.$router.push({ name: 'HomePage' });
-      },
-
-      goBack() {
-        this.$router.push({ name: 'HomePage' });
-      },
+      this.event = {
+        ...eventWithCategories,
+        categories: Array.isArray(eventWithCategories.categories)
+          ? eventWithCategories.categories.map((cat) => cat.id)
+          : [],
+      }
     },
-  };
+
+    loadCategories() {
+      this.categories = EventService.getCategories()
+    },
+
+    upsertEvent() {
+      this.errors = []
+      if (!this.event.name) this.errors.push('Event name is required.')
+      if (!this.event.startDate) this.errors.push('Start date is required.')
+      if (!this.event.endDate) this.errors.push('End date is required.')
+      if (this.event.startDate && this.event.endDate) {
+        const startDate = new Date(this.event.startDate)
+        const endDate = new Date(this.event.endDate)
+        if (endDate < startDate) {
+          this.errors.push('End date cannot be before start date.')
+        }
+      }
+
+      if (this.errors.length === 0) {
+        const updatedEvent = {
+          ...this.event,
+          categories: this.event.categories.map((catId) =>
+            this.categories.find((cat) => cat.id === catId),
+          ),
+        }
+        EventService.upsertEventWithCategories(updatedEvent)
+        this.$router.push({ name: 'HomePage' })
+      }
+    },
+
+    deleteEvent() {
+      EventService.deleteEvent(this.event.id)
+      this.$router.push({ name: 'HomePage' })
+    },
+
+    goBack() {
+      this.$router.push({ name: 'HomePage' })
+    },
+  },
+}
 </script>

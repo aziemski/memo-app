@@ -1,14 +1,12 @@
-import { reactive, watch } from 'vue';
+import { reactive, watch } from 'vue'
 
-const savedState = JSON.parse(localStorage.getItem('store')) || {};
+const savedState = JSON.parse(localStorage.getItem('store')) || {}
 
 export const store = reactive({
-  isListView:
-    savedState.isListView !== undefined ? savedState.isListView : false,
+  isListView: savedState.isListView !== undefined ? savedState.isListView : false,
   users: savedState.users !== undefined ? savedState.users : [],
 
-  currentUser:
-    savedState.currentUser !== undefined ? savedState.currentUser : null,
+  currentUser: savedState.currentUser !== undefined ? savedState.currentUser : null,
   filters: {
     selectedCategories:
       savedState.filters?.selectedCategories !== undefined
@@ -21,22 +19,22 @@ export const store = reactive({
   },
 
   toggleView() {
-    this.isListView = !this.isListView;
+    this.isListView = !this.isListView
   },
 
   setFilterSelectedCategories(value) {
-    this.filters.selectedCategories = Array.isArray(value) ? value : [];
+    this.filters.selectedCategories = Array.isArray(value) ? value : []
   },
 
   setFilterTimeRange(value) {
-    this.filters.timeRange = value || { from: null, to: null };
+    this.filters.timeRange = value || { from: null, to: null }
   },
 
   clearFilters() {
-    this.filters.selectedCategories = [];
-    this.filters.timeRange = { from: null, to: null };
+    this.filters.selectedCategories = []
+    this.filters.timeRange = { from: null, to: null }
   },
-});
+})
 
 watch(
   () => ({
@@ -46,7 +44,7 @@ watch(
     filters: store.filters,
   }),
   (newValues) => {
-    localStorage.setItem('store', JSON.stringify(newValues));
+    localStorage.setItem('store', JSON.stringify(newValues))
   },
   { deep: true },
-);
+)

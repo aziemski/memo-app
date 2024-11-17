@@ -1,8 +1,6 @@
 <template>
   <div class="container mt-5">
-    <div v-if="events.length === 0" class="alert alert-info text-center">
-      No events.
-    </div>
+    <div v-if="events.length === 0" class="alert alert-info text-center">No events.</div>
     <div v-else>
       <ul class="list-group">
         <li v-for="evt in events" :key="evt.id" class="list-group-item">
@@ -48,42 +46,41 @@
 </template>
 
 <script>
-  import AuthService from '@/services/authService';
-  import EventService from '@/services/eventService';
-  import { store } from '@/store';
+import AuthService from '@/services/authService'
+import EventService from '@/services/eventService'
+import { store } from '@/store'
 
-  export default {
-    data() {
-      return {
-        placeholderImage:
-          'https://via.placeholder.com/100x100?text=No+Image+Available',
-      };
+export default {
+  data() {
+    return {
+      placeholderImage: 'https://via.placeholder.com/100x100?text=No+Image+Available',
+    }
+  },
+  computed: {
+    isAuthenticated() {
+      return AuthService.isAuthenticated()
     },
-    computed: {
-      isAuthenticated() {
-        return AuthService.isAuthenticated();
-      },
-      events() {
-        return EventService.getEventsWithCategories(store.filters);
-      },
+    events() {
+      return EventService.getEventsWithCategories(store.filters)
     },
-    methods: {
-      formatDate(date) {
-        if (!date) return null;
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(date).toLocaleDateString(undefined, options);
-      },
+  },
+  methods: {
+    formatDate(date) {
+      if (!date) return null
+      const options = { year: 'numeric', month: 'short', day: 'numeric' }
+      return new Date(date).toLocaleDateString(undefined, options)
     },
-  };
+  },
+}
 </script>
 
 <style scoped>
-  .img-thumbnail {
-    max-width: 100px;
-    height: auto;
-  }
+.img-thumbnail {
+  max-width: 100px;
+  height: auto;
+}
 
-  .list-group-item {
-    padding: 1rem;
-  }
+.list-group-item {
+  padding: 1rem;
+}
 </style>

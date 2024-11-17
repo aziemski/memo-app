@@ -2,11 +2,7 @@
   <div class="container my-5">
     <h1>Categories</h1>
 
-    <div
-      v-if="successMessage"
-      class="alert alert-success alert-dismissible fade show"
-      role="alert"
-    >
+    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
       {{ successMessage }}
       <button
         aria-label="Close"
@@ -16,11 +12,7 @@
       ></button>
     </div>
 
-    <div
-      v-if="errors.length"
-      class="alert alert-danger alert-dismissible fade show"
-      role="alert"
-    >
+    <div v-if="errors.length" class="alert alert-danger alert-dismissible fade show" role="alert">
       <ul>
         <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
       </ul>
@@ -35,13 +27,7 @@
     <form @submit.prevent="addCategory">
       <div class="form-group">
         <label for="name">Name</label>
-        <input
-          id="name"
-          v-model="newCategory.name"
-          class="form-control"
-          required
-          type="text"
-        />
+        <input id="name" v-model="newCategory.name" class="form-control" required type="text" />
       </div>
 
       <div class="form-group d-flex align-items-center mt-3">
@@ -99,10 +85,7 @@
             >
               Edit
             </router-link>
-            <button
-              class="btn btn-sm btn-danger"
-              @click="deleteCategory(category.id)"
-            >
+            <button class="btn btn-sm btn-danger" @click="deleteCategory(category.id)">
               Delete
             </button>
           </td>
@@ -113,82 +96,82 @@
 </template>
 
 <script>
-  import EventService from '@/services/eventService';
-  import AuthService from '@/services/authService';
+import EventService from '@/services/eventService'
+import AuthService from '@/services/authService'
 
-  export default {
-    data() {
-      return {
-        categories: [],
-        newCategory: {
-          name: '',
-          color: '#d3d3d3',
-        },
-        disableColor: false,
-        successMessage: null,
-        errors: [],
-      };
+export default {
+  data() {
+    return {
+      categories: [],
+      newCategory: {
+        name: '',
+        color: '#d3d3d3',
+      },
+      disableColor: false,
+      successMessage: null,
+      errors: [],
+    }
+  },
+
+  created() {
+    this.auth()
+    this.loadCategories()
+  },
+
+  methods: {
+    auth() {
+      if (!AuthService.isAuthenticated()) {
+        this.$router.push('/login')
+      }
     },
 
-    created() {
-      this.auth();
-      this.loadCategories();
+    loadCategories() {
+      this.categories = EventService.getCategories()
     },
 
-    methods: {
-      auth() {
-        if (!AuthService.isAuthenticated()) {
-          this.$router.push('/login');
-        }
-      },
+    addCategory() {
+      this.errors = []
 
-      loadCategories() {
-        this.categories = EventService.getCategories();
-      },
+      if (!this.newCategory.name) {
+        this.errors.push('Name is required.')
+        return
+      }
 
-      addCategory() {
-        this.errors = [];
+      const newCategory = {
+        ...this.newCategory,
+        color: this.disableColor ? null : this.newCategory.color,
+        id: Date.now(),
+      }
 
-        if (!this.newCategory.name) {
-          this.errors.push('Name is required.');
-          return;
-        }
+      try {
+        EventService.saveCategories([...this.categories, newCategory])
+      } catch (error) {
+        this.errors.push(error.message)
+        return
+      }
 
-        const newCategory = {
-          ...this.newCategory,
-          color: this.disableColor ? null : this.newCategory.color,
-          id: Date.now(),
-        };
-
-        try {
-          EventService.saveCategories([...this.categories, newCategory]);
-        } catch (error) {
-          this.errors.push(error.message);
-          return;
-        }
-
-        this.categories.push(newCategory);
-        this.newCategory = { name: '', color: '#d3d3d3' };
-        this.disableColor = false;
-        this.successMessage = 'Category added successfully!';
-      },
-
-      deleteCategory(id) {
-        this.categories = this.categories.filter((cat) => cat.id !== id);
-        try {
-          EventService.saveCategories(this.categories);
-        } catch (error) {
-          this.errors.push(error.message);
-          return;
-        }
-
-        this.successMessage = 'Category deleted successfully!';
-      },
-
-      clearMessage(type) {
-        if (type === 'successMessage') this.successMessage = null;
-        if (type === 'errors') this.errors = [];
-      },
+      this.categories.push(newCategory)
+      this.newCategory = { name: '', color: '#d3d3d3' }
+      this.disableColor = false
+      this.successMessage = 'Category added successfully!'
     },
-  };
+
+    deleteCategory(id) {
+      this.categories = this.categories.filter((cat) => cat.id !== id)
+      try {
+        EventService.saveCategories(this.categories)
+      } catch (error) {
+        this.errors.push(error.message)
+        return
+      }
+
+      this.successMessage = 'Category deleted successfully!'
+    },
+
+    clearMessage(type) {
+      if (type === 'successMessage') this.successMessage = null
+      if (type === 'errors') this.errors = []
+    },
+  },
+}
 </script>

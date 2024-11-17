@@ -1,5 +1,5 @@
-import AuthService from '@/services/authService';
-import EventService from '@/services/eventService';
+import AuthService from '@/services/authService'
+import EventService from '@/services/eventService'
 
 const SeedData = {
   seedEvents() {
@@ -85,7 +85,7 @@ const SeedData = {
         endDate: '2024-12-20',
         imgUrl: 'https://placecats.com/neo_banana/648/380',
       },
-    ];
+    ]
 
     const categories = [
       { id: 1, name: 'Technology', color: '#3498db' },
@@ -94,7 +94,7 @@ const SeedData = {
       { id: 4, name: 'Sports', color: '#f1c40f' },
       { id: 5, name: 'Travel', color: null },
       { id: 6, name: 'Food', color: '#8e44ad' },
-    ];
+    ]
 
     const eventCategories = [
       { eventId: 1, categoryId: 1 },
@@ -115,11 +115,11 @@ const SeedData = {
       { eventId: 8, categoryId: 4 },
       { eventId: 8, categoryId: 2 },
       { eventId: 9, categoryId: 3 },
-    ];
+    ]
 
-    EventService.saveEvents(events);
-    EventService.saveCategories(categories);
-    EventService.saveEventCategories(eventCategories);
+    EventService.saveEvents(events)
+    EventService.saveCategories(categories)
+    EventService.saveEventCategories(eventCategories)
   },
 
   async seedUsers() {
@@ -129,26 +129,26 @@ const SeedData = {
         email: 'test@example.com',
         password: 'asdfasdf',
       },
-    ];
+    ]
 
     for (const user of users) {
-      await AuthService.save(user);
+      await AuthService.save(user)
     }
   },
 
   seedData() {
-    (async () => {
-      await this.seedUsers();
-    })();
-    this.seedEvents();
+    ;(async () => {
+      await this.seedUsers()
+    })()
+    this.seedEvents()
   },
 
   initialSeed() {
     if (!localStorage.getItem('isSeeded')) {
-      this.seedData();
-      localStorage.setItem('isSeeded', 'true');
+      this.seedData()
+      localStorage.setItem('isSeeded', 'true')
     }
   },
-};
+}
 
-export default SeedData;
+export default SeedData

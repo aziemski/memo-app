@@ -63,27 +63,27 @@
 </template>
 
 <script>
-  import AuthService from '@/services/authService';
+import AuthService from '@/services/authService'
 
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-        errors: [],
-      };
-    },
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      errors: [],
+    }
+  },
 
-    methods: {
-      handleLogin() {
-        this.errors = [];
-        const success = AuthService.login(this.email, this.password);
-        if (!success) {
-          this.errors.push('Invalid email or password.');
-        } else {
-          this.$router.push('/');
-        }
-      },
+  methods: {
+    handleLogin() {
+      this.errors = []
+      const success = AuthService.login(this.email, this.password)
+      if (!success) {
+        this.errors.push('Invalid email or password.')
+      } else {
+        this.$router.push('/')
+      }
     },
-  };
+  },
+}
 </script>
