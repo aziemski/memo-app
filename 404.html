@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting...</title>
+    <script>
+        const redirectPath = window.location.pathname;
+        window.location.replace('/index.html?redirect=' + encodeURIComponent(redirectPath));
+    </script>
+</head>
+<body>
+<p>Redirecting...</p>
+</body>
+</html>
