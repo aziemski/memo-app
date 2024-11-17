@@ -107,15 +107,6 @@
           </button>
         </li>
 
-        <li class="d-flex align-items-center">
-          <button class="btn btn-outline-danger" @click="seedEvents">Seed Events</button>
-        </li>
-        <li class="d-flex align-items-center">
-          <button class="btn btn-outline-danger" @click="toggleAuth"> {{
-              isAuthenticated ? 'Logout' : 'Login'
-            }}
-          </button>
-        </li>
         <li class="nav-item">
           <router-link v-if="isAuthenticated" class="nav-link btn btn-primary" to="/me">
             Me
@@ -170,13 +161,6 @@ export default {
     toggleView() {
       store.toggleView();
     },
-    toggleAuth() {
-      if (this.isAuthenticated) {
-        AuthService.logout()
-      } else {
-        AuthService.login('a@a.com', 'asdfasdf')
-      }
-    },
     addEvent() {
       this.$router.push({name: "AddEvent"});
     },
@@ -189,10 +173,6 @@ export default {
       this.timeRange = {from: null, to: null};
       store.clearFilters();
     },
-    seedEvents() {
-      EventService.seedData();
-      window.location.reload();
-    }
   }
 };
 </script>
