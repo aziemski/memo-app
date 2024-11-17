@@ -93,26 +93,52 @@ class EventService {
             .map(category => category.name);
     }
 
-    getEventsWithCategories() {
+    getEventsWithCategories(filter = {}) {
+        const { selectedCategories = [], timeRange = { from: null, to: null } } = filter;
         const events = this.getEvents();
         const categories = this.getCategories();
         const eventCategories = this.getEventCategories();
 
-        return events.map(event => {
-            const eventCategoryIds = eventCategories
-                .filter(ec => ec.eventId === event.id)
-                .map(ec => ec.categoryId);
+        return events
+            .map(event => {
+                const eventCategoryIds = eventCategories
+                    .filter(ec => ec.eventId === event.id)
+                    .map(ec => ec.categoryId);
 
-            const eventCategoriesList = categories.filter(category =>
-                eventCategoryIds.includes(category.id)
-            );
+                const eventCategoriesList = categories.filter(category =>
+                    eventCategoryIds.includes(category.id)
+                );
 
-            return {
-                ...event,
-                categories: eventCategoriesList,
-            };
-        });
+                return {
+                    ...event,
+                    categories: eventCategoriesList,
+                };
+            })
+            .filter(event => {
+                if (selectedCategories.length > 0) {
+                    const eventCategoryIds = event.categories.map(category => category.id);
+                    if (!selectedCategories.some(catId => eventCategoryIds.includes(catId))) {
+                        return false;
+                    }
+                }
+
+                if (timeRange.from || timeRange.to) {
+                    const eventStart = new Date(event.startDate);
+                    const eventEnd = new Date(event.endDate || event.startDate);
+
+                    if (timeRange.from && eventEnd < new Date(timeRange.from)) {
+                        return false;
+                    }
+
+                    if (timeRange.to && eventStart > new Date(timeRange.to)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
     }
+
 
     findEventWithCategories(eventId) {
         return this.getEventsWithCategories()

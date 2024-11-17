@@ -50,11 +50,11 @@
 <script>
 import AuthService from "@/services/authService";
 import eventService from "@/services/EventService";
+import {store} from '@/store';
 
 export default {
   data() {
     return {
-      events: [],
       placeholderImage:
           "https://via.placeholder.com/100x100?text=No+Image+Available",
     };
@@ -62,15 +62,12 @@ export default {
   computed: {
     isAuthenticated() {
       return AuthService.isAuthenticated();
+    },
+    events() {
+      return eventService.getEventsWithCategories(store.filters)
     }
   },
-  created() {
-    this.loadEvents();
-  },
   methods: {
-    loadEvents() {
-      this.events = eventService.getEventsWithCategories();
-    },
     formatDate(date) {
       if (!date) return null;
       const options = {year: "numeric", month: "short", day: "numeric"};
