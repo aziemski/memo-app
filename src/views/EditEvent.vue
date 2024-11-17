@@ -112,6 +112,7 @@
 
 <script>
 import EventService from "@/services/eventService";
+import AuthService from "@/services/authService";
 
 export default {
   props: {
@@ -135,12 +136,18 @@ export default {
     };
   },
   created() {
+    this.auth()
     this.loadCategories();
     if (this.mode === "edit") {
       this.loadEvent();
     }
   },
   methods: {
+    auth() {
+      if (!AuthService.isAuthenticated()) {
+        this.$router.push("/login");
+      }
+    },
     loadEvent() {
       const eventId = parseInt(this.$route.params.id);
       const eventWithCategories = EventService.findEventWithCategories(eventId);

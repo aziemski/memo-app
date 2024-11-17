@@ -64,6 +64,7 @@
 
 <script>
 import EventService from "@/services/eventService";
+import AuthService from "@/services/authService";
 
 export default {
   data() {
@@ -79,9 +80,16 @@ export default {
     };
   },
   created() {
+    this.auth();
     this.loadCategory();
   },
   methods: {
+    auth() {
+      if (!AuthService.isAuthenticated()) {
+        this.$router.push("/login");
+      }
+    },
+
     loadCategory() {
       const categoryId = parseInt(this.$route.params.id, 10);
       const allCategories = EventService.getCategories();
@@ -94,6 +102,7 @@ export default {
         this.errors.push("Category not found.");
       }
     },
+
     updateCategory() {
       this.errors = [];
 

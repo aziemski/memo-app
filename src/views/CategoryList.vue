@@ -82,6 +82,7 @@
 
 <script>
 import EventService from "@/services/eventService";
+import AuthService from "@/services/authService";
 
 export default {
   data() {
@@ -97,9 +98,15 @@ export default {
     };
   },
   created() {
+    this.auth();
     this.loadCategories();
   },
   methods: {
+    auth() {
+      if (!AuthService.isAuthenticated()) {
+        this.$router.push("/login");
+      }
+    },
     loadCategories() {
       this.categories = EventService.getCategories();
     },
