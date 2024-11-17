@@ -4,6 +4,7 @@ import CategoryEdit from '@/views/CategoryEdit.vue';
 import CategoryList from '@/views/CategoryList.vue';
 import EditEvent from '@/views/EditEvent.vue';
 import UserLogin from '@/views/UserLogin.vue';
+import UserProfile from '@/views/UserProfile.vue';
 import UserSignup from '@/views/UserSignup.vue';
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
         component: EditEvent,
         props: {mode: 'edit'},
         name: 'EditEvent'
+    },
+    {
+        path: '/me',
+        component: UserProfile,
+        name: 'UserProfile',
     },
     {
         path: '/login',

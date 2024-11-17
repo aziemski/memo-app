@@ -48,8 +48,8 @@
 </template>
 
 <script>
+import AuthService from "@/services/authService";
 import eventService from "@/services/EventService";
-import {store} from "@/store";
 
 export default {
   data() {
@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     isAuthenticated() {
-      return store.isAuthenticated;
+      return AuthService.isAuthenticated();
     }
   },
   created() {

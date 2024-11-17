@@ -14,7 +14,7 @@ import {Timeline} from "@knight-lab/timelinejs";
 import "@knight-lab/timelinejs/dist/css/timeline.css";
 
 import eventService from "@/services/EventService";
-import {store} from "@/store";
+import AuthService from "@/services/authService";
 
 export default {
   name: "EventTimeline",
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     isAuthenticated() {
-      return store.isAuthenticated;
+      return AuthService.isAuthenticated();
     }
   },
   created() {

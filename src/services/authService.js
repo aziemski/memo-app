@@ -19,7 +19,6 @@ const AuthService = {
 
         store.users.push(newUser);
         store.currentUser = newUser;
-        store.isAuthenticated = true;
 
         return newUser;
     },
@@ -36,9 +35,16 @@ const AuthService = {
     },
 
     logout() {
-        store.currentUser = {};
-        store.isAuthenticated = false;
+        store.currentUser = null;
     },
+
+    isAuthenticated() {
+        return !!store.currentUser
+    },
+
+    loggedUser() {
+        return store.currentUser;
+    }
 };
 
 export default AuthService;

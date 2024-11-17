@@ -107,6 +107,7 @@
 </template>
 
 <script>
+import AuthService from "@/services/authService";
 import {store} from '@/store';
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
@@ -135,7 +136,7 @@ export default {
       return store.isListView;
     },
     isAuthenticated() {
-      return store.isAuthenticated;
+      return AuthService.isAuthenticated();
     }
   },
   methods: {
@@ -146,7 +147,11 @@ export default {
       store.toggleView();
     },
     toggleAuth() {
-      store.isAuthenticated = !this.isAuthenticated;
+      if (this.isAuthenticated) {
+        AuthService.logout()
+      } else {
+        AuthService.login('a@a.com', 'asdfasdf')
+      }
     },
     addEvent() {
       this.$router.push({name: "AddEvent"});

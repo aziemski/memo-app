@@ -7,17 +7,13 @@ export const store = reactive({
         savedState.isListView
         !== undefined
             ? savedState.isListView : false,
-
-    isAuthenticated:
-        savedState.isAuthenticated !== undefined
-            ? savedState.isAuthenticated : false,
     users:
         savedState.users !== undefined
             ? savedState.users : [],
 
     currentUser:
         savedState.currentUser !== undefined
-            ? savedState.currentUser : [],
+            ? savedState.currentUser : null,
 
     toggleView() {
         this.isListView = !this.isListView;
@@ -27,7 +23,6 @@ export const store = reactive({
 watch(
     () => ({
         isListView: store.isListView,
-        isAuthenticated: store.isAuthenticated,
         users: store.users,
         currentUser: store.currentUser,
     }),
