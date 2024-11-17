@@ -94,7 +94,7 @@ class EventService {
     }
 
     getEventsWithCategories(filter = {}) {
-        const { selectedCategories = [], timeRange = { from: null, to: null } } = filter;
+        const {selectedCategories = [], timeRange = {from: null, to: null}} = filter;
         const events = this.getEvents();
         const categories = this.getCategories();
         const eventCategories = this.getEventCategories();

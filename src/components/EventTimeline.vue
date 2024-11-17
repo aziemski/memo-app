@@ -4,7 +4,7 @@
       No events.
     </div>
     <div v-else>
-      <div id="timeline-embed" class="min-vh-100"></div>
+      <div id="timeline-embed" class="min-vh-95"></div>
     </div>
   </div>
 </template>
@@ -15,39 +15,62 @@ import "@knight-lab/timelinejs/dist/css/timeline.css";
 
 import eventService from "@/services/EventService";
 import AuthService from "@/services/authService";
+import {store} from "@/store";
+import {nextTick} from "vue";
 
 export default {
   name: "EventTimeline",
   data() {
     return {
-      events: [],
+      timelineInstance: null,
     };
   },
   computed: {
     isAuthenticated() {
       return AuthService.isAuthenticated();
-    }
+    },
+    events() {
+      const events = eventService.getEventsWithCategories(store.filters);
+      return this.mapToTimelineEvent(events);
+    },
   },
-  created() {
-    this.loadEvents();
-  },
-  mounted() {
-    if (this.events.length) {
-      new Timeline("timeline-embed", {
-        title: {
-          text: {
-            headline: "My Memo",
-            text: "Enjoy.",
-          },
-        },
-        events: this.events,
-      });
-    }
+  watch: {
+    events: {
+      handler(newEvents) {
+        if (this.timelineInstance) {
+          this.destroyTimeline();
+        }
+        if (newEvents.length) {
+          this.initTimeline(newEvents);
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
-    loadEvents() {
-      const events = eventService.getEventsWithCategories();
-      this.events = this.mapToTimelineEvent(events);
+    async initTimeline(events) {
+      await nextTick();
+      const container = document.getElementById("timeline-embed");
+      if (container) {
+        this.timelineInstance = new Timeline("timeline-embed", {
+          title: {
+            text: {
+              headline: "My Memo",
+              text: "Enjoy.",
+            },
+          },
+          events,
+        });
+      } else {
+        console.error("Timeline container not found!");
+      }
+    },
+    destroyTimeline() {
+      const container = document.getElementById("timeline-embed");
+      if (container) {
+        container.innerHTML = "";
+      }
+      this.timelineInstance = null;
     },
     mapToTimelineEvent(src) {
       return src.map((event) => {
@@ -89,4 +112,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+#timeline-embed {
+  height: 80vh;
+}
+</style>
 

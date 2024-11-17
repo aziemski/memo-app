@@ -117,7 +117,7 @@ export default {
         id: Date.now(),
       };
 
-      try{
+      try {
         eventService.saveCategories([...this.categories, newCategory]);
       } catch (error) {
         this.errors.push(error.message);
@@ -131,7 +131,7 @@ export default {
     },
     deleteCategory(id) {
       this.categories = this.categories.filter((cat) => cat.id !== id);
-      try{
+      try {
         eventService.saveCategories(this.categories);
       } catch (error) {
         this.errors.push(error.message);

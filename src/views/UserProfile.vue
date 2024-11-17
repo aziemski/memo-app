@@ -9,7 +9,7 @@
         </p>
       </div>
 
-      <button @click="logout" class="btn btn-danger">Logout</button>
+      <button class="btn btn-danger" @click="logout">Logout</button>
     </div>
   </div>
 </template>
