@@ -55,22 +55,6 @@ class EventService {
         localStorage.setItem(this.eventCategoriesKey, JSON.stringify(eventCategories));
     }
 
-    addEvent(event) {
-        const events = this.getEvents();
-        events.push(event);
-        this.saveEvents(events);
-    }
-
-    updateEvent(updatedEvent) {
-        const events = this.getEvents();
-        const index = events
-            .findIndex(event => event.id === updatedEvent.id);
-        if (index !== -1) {
-            events[index] = updatedEvent;
-            this.saveEvents(events);
-        }
-    }
-
     deleteEvent(eventId) {
         const events = this.getEvents()
             .filter(event => event.id !== eventId);
@@ -82,15 +66,6 @@ class EventService {
         const eventCategories = this.getEventCategories()
             .filter(conn => conn.eventId !== eventId);
         this.saveEventCategories(eventCategories);
-    }
-
-    getCategoriesForEvent(eventId) {
-        const categoryIds = this.getEventCategories()
-            .filter(conn => conn.eventId === eventId)
-            .map(conn => conn.categoryId);
-        return this.getCategories()
-            .filter(category => categoryIds.includes(category.id))
-            .map(category => category.name);
     }
 
     getEventsWithCategories(filter = {}) {
@@ -144,26 +119,6 @@ class EventService {
         return this.getEventsWithCategories()
             .find(evt => evt.id === eventId) || {};
     }
-
-    updateEventWithCategories(updatedEvent) {
-        const events = this.getEvents();
-        const index = events.findIndex(event => event.id === updatedEvent.id);
-        if (index !== -1) {
-            const {...eventData} = updatedEvent;
-            events[index] = eventData;
-            this.saveEvents(events);
-        }
-
-        let eventCategories = this.getEventCategories();
-        eventCategories = eventCategories.filter(ec => ec.eventId !== updatedEvent.id);
-
-        updatedEvent.categories.forEach(category => {
-            eventCategories.push({eventId: updatedEvent.id, categoryId: category.id});
-        });
-
-        this.saveEventCategories(eventCategories);
-    }
-
     upsertEventWithCategories(eventWithCategories) {
         const events = this.getEvents();
         const eventCategories = this.getEventCategories();
