@@ -1,19 +1,19 @@
-const {defineConfig} = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
 module.exports = defineConfig({
-    transpileDependencies: true,
-    css: {
-        loaderOptions: {
-            less: {
-                lessOptions: {
-                    javascriptEnabled: true
-                }
-            }
-        }
+  transpileDependencies: true,
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          javascriptEnabled: true,
+        },
+      },
     },
-    chainWebpack: config => {
-        config.plugin('html').tap(args => {
-            args[0].title = 'Memo App';
-            return args;
-        });
-    }
+  },
+  chainWebpack: (config) => {
+    config.plugin('html').tap((args) => {
+      args[0].title = 'Memo App';
+      return args;
+    });
+  },
 });

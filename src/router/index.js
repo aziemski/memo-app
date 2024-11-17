@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
 import CategoryEdit from '@/views/CategoryEdit.vue';
 import CategoryList from '@/views/CategoryList.vue';
@@ -8,54 +8,53 @@ import UserProfile from '@/views/UserProfile.vue';
 import UserSignup from '@/views/UserSignup.vue';
 
 const routes = [
-    {
-        path: '/', component:
-        HomePage,
-        name: 'HomePage'
-    },
-    {
-        path: '/categories',
-        component: CategoryList,
-        name: 'CategoryList'
-    },
-    {
-        path: '/categories/edit/:id',
-        component: CategoryEdit,
-        name: 'CategoryEdit'
-    },
-    {
-        path: '/events/add',
-        component: EditEvent,
-        props: {mode: 'add'},
-        name: 'AddEvent'
-    },
-    {
-        path: '/events/edit/:id',
-        component: EditEvent,
-        props: {mode: 'edit'},
-        name: 'EditEvent'
-    },
-    {
-        path: '/me',
-        component: UserProfile,
-        name: 'UserProfile',
-    },
-    {
-        path: '/login',
-        component: UserLogin,
-        name: 'UserLogin',
-    },
-    {
-        path: '/signup',
-        component: UserSignup,
-        name: 'UserSignup'
-    },
+  {
+    path: '/',
+    component: HomePage,
+    name: 'HomePage',
+  },
+  {
+    path: '/categories',
+    component: CategoryList,
+    name: 'CategoryList',
+  },
+  {
+    path: '/categories/edit/:id',
+    component: CategoryEdit,
+    name: 'CategoryEdit',
+  },
+  {
+    path: '/events/add',
+    component: EditEvent,
+    props: { mode: 'add' },
+    name: 'AddEvent',
+  },
+  {
+    path: '/events/edit/:id',
+    component: EditEvent,
+    props: { mode: 'edit' },
+    name: 'EditEvent',
+  },
+  {
+    path: '/me',
+    component: UserProfile,
+    name: 'UserProfile',
+  },
+  {
+    path: '/login',
+    component: UserLogin,
+    name: 'UserLogin',
+  },
+  {
+    path: '/signup',
+    component: UserSignup,
+    name: 'UserSignup',
+  },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
-})
+  history: createWebHistory(),
+  routes,
+});
 
 export default router;
-

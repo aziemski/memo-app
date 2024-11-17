@@ -1,25 +1,23 @@
 <template>
-  <AppNavbar/>
-  <router-view/>
+  <AppNavbar />
+  <router-view />
 </template>
 
 <script>
-import AppNavbar from '@/components/AppNavbar.vue'
+  import AppNavbar from '@/components/AppNavbar.vue';
 
-export default {
-  name: 'App',
-  components: {
-    AppNavbar
-  }
-}
+  export default {
+    name: 'App',
+    components: {
+      AppNavbar,
+    },
+  };
 </script>
 
 <style>
-
-@media print {
-  .navbar {
-    display: none !important;
+  @media print {
+    .navbar {
+      display: none !important;
+    }
   }
-}
-
 </style>
