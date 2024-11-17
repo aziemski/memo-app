@@ -17,7 +17,6 @@
           <button class="btn btn-sm btn-primary" @click="addEvent">+ Add Event</button>
         </li>
 
-
         <li v-if="isHomePage" class="nav-item dropdown">
           <form id="categoryForm" @submit.prevent="applyFilters">
             <a
@@ -57,6 +56,30 @@
                   </label>
                 </div>
               </li>
+              
+              <li class="dropdown-divider"></li>
+              <li>
+                <div class="mb-2">
+                  <label class="form-label" for="fromDate">From</label>
+                  <input
+                      id="fromDate"
+                      v-model="timeRange.from"
+                      class="form-control"
+                      type="date"
+                  />
+                </div>
+                <div>
+                  <label class="form-label" for="toDate">To</label>
+                  <input
+                      id="toDate"
+                      v-model="timeRange.to"
+                      class="form-control"
+                      type="date"
+                  />
+                </div>
+              </li>
+
+
               <li class="dropdown-divider"></li>
               <li class="d-flex justify-content-end gap-2">
                 <button
@@ -125,8 +148,9 @@ export default {
   data() {
     return {
       categories: [],
-      selectedCategories: []
-    };
+      selectedCategories: store.filters.selectedCategories,
+      timeRange: {...store.filters.timeRange},
+    }
   },
   created() {
     this.loadCategories();
@@ -137,7 +161,7 @@ export default {
     },
     isAuthenticated() {
       return AuthService.isAuthenticated();
-    }
+    },
   },
   methods: {
     loadCategories() {
@@ -157,11 +181,13 @@ export default {
       this.$router.push({name: "AddEvent"});
     },
     applyFilters() {
-      console.log("Filters applied:", this.selectedCategories);
+      store.setFilterSelectedCategories(this.selectedCategories);
+      store.setFilterTimeRange(this.timeRange);
     },
     clearFilters() {
-      this.selectedCategories = [];
-      console.log("Filters cleared.");
+      this.selectedCategories = []
+      this.timeRange = {from: null, to: null};
+      store.clearFilters();
     },
     seedEvents() {
       eventService.seedData();
