@@ -16,10 +16,12 @@ import EventTimeline from "@/components/EventTimeline.vue";
 import EventList from "@/components/EventList.vue";
 
 export default {
+
   components: {
     EventTimeline,
     EventList,
   },
+
   computed: {
     isListView() {
       return store.isListView;

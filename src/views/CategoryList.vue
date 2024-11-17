@@ -85,6 +85,7 @@ import EventService from "@/services/eventService";
 import AuthService from "@/services/authService";
 
 export default {
+
   data() {
     return {
       categories: [],
@@ -97,19 +98,24 @@ export default {
       errors: [],
     };
   },
+
   created() {
     this.auth();
     this.loadCategories();
   },
+
   methods: {
+
     auth() {
       if (!AuthService.isAuthenticated()) {
         this.$router.push("/login");
       }
     },
+
     loadCategories() {
       this.categories = EventService.getCategories();
     },
+
     addCategory() {
       this.errors = [];
 
@@ -136,6 +142,7 @@ export default {
       this.disableColor = false;
       this.successMessage = "Category added successfully!";
     },
+
     deleteCategory(id) {
       this.categories = this.categories.filter((cat) => cat.id !== id);
       try {
@@ -147,10 +154,12 @@ export default {
 
       this.successMessage = "Category deleted successfully!";
     },
+
     clearMessage(type) {
       if (type === "successMessage") this.successMessage = null;
       if (type === "errors") this.errors = [];
     },
+
   },
 };
 </script>

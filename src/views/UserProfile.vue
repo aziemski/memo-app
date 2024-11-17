@@ -18,14 +18,17 @@
 import AuthService from "@/services/authService";
 
 export default {
+
   data() {
     return {
       user: {},
     };
   },
+
   created() {
     this.loadUser();
   },
+
   methods: {
     loadUser() {
       const loggedUser = AuthService.loggedUser();
@@ -35,6 +38,7 @@ export default {
         this.$router.push("/login");
       }
     },
+
     formatDate(dateString) {
       const date = new Date(dateString);
       return date.toLocaleDateString({
@@ -43,6 +47,7 @@ export default {
         day: "numeric",
       });
     },
+
     logout() {
       AuthService.logout()
       this.$router.push("/login");

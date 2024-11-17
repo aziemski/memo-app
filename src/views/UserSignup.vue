@@ -97,6 +97,7 @@
 import AuthService from "@/services/authService";
 
 export default {
+
   data() {
     return {
       form: {
@@ -108,6 +109,7 @@ export default {
       errors: [],
     };
   },
+
   methods: {
     async handleSignup() {
       this.errors = [];
@@ -135,6 +137,7 @@ export default {
         this.$router.push("/");
       }
     },
+
     validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email);

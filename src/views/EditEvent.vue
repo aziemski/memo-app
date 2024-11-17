@@ -115,12 +115,14 @@ import EventService from "@/services/eventService";
 import AuthService from "@/services/authService";
 
 export default {
+
   props: {
     mode: {
       type: String,
       required: true,
     },
   },
+
   data() {
     return {
       event: {
@@ -135,6 +137,7 @@ export default {
       errors: [],
     };
   },
+
   created() {
     this.auth()
     this.loadCategories();
@@ -142,25 +145,36 @@ export default {
       this.loadEvent();
     }
   },
+
   methods: {
     auth() {
       if (!AuthService.isAuthenticated()) {
         this.$router.push("/login");
       }
     },
+
     loadEvent() {
       const eventId = parseInt(this.$route.params.id);
       const eventWithCategories = EventService.findEventWithCategories(eventId);
-      if (eventWithCategories) {
-        this.event = {
-          ...eventWithCategories,
-          categories: eventWithCategories.categories.map((cat) => cat.id),
-        };
+
+      if (!eventWithCategories) {
+        this.errors.push("Event not found.");
+        return
       }
+
+      this.event = {
+        ...eventWithCategories,
+        categories: Array.isArray(eventWithCategories.categories)
+            ? eventWithCategories.categories.map((cat) => cat.id)
+            : [],
+      };
+
     },
+
     loadCategories() {
       this.categories = EventService.getCategories();
     },
+
     upsertEvent() {
       this.errors = [];
       if (!this.event.name) this.errors.push("Event name is required.");
@@ -185,13 +199,16 @@ export default {
         this.$router.push({name: "HomePage"});
       }
     },
+
     deleteEvent() {
       EventService.deleteEvent(this.event.id);
       this.$router.push({name: "HomePage"});
     },
+
     goBack() {
       this.$router.push({name: "HomePage"});
     },
+
   },
 };
 </script>

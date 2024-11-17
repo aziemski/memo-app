@@ -65,12 +65,14 @@ import AuthService from "@/services/authService";
 
 export default {
   data() {
+
     return {
       email: "",
       password: "",
       errors: [],
     };
   },
+
   methods: {
     handleLogin() {
       this.errors = [];
@@ -81,6 +83,7 @@ export default {
         this.$router.push("/");
       }
     },
+
   },
 };
 </script>

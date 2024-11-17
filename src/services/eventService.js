@@ -105,7 +105,7 @@ const EventService = {
     },
 
     findEventWithCategories(eventId) {
-        return this.getEventsWithCategories().find(evt => evt.id === eventId) || {};
+        return this.getEventsWithCategories().find(evt => evt.id === eventId) || null;
     },
 
     upsertEventWithCategories(eventWithCategories) {
