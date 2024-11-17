@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import eventService from "@/services/EventService";
+import EventService from "@/services/eventService";
 
 export default {
   data() {
@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     loadCategories() {
-      this.categories = eventService.getCategories();
+      this.categories = EventService.getCategories();
     },
     addCategory() {
       this.errors = [];
@@ -118,7 +118,7 @@ export default {
       };
 
       try {
-        eventService.saveCategories([...this.categories, newCategory]);
+        EventService.saveCategories([...this.categories, newCategory]);
       } catch (error) {
         this.errors.push(error.message);
         return;
@@ -132,7 +132,7 @@ export default {
     deleteCategory(id) {
       this.categories = this.categories.filter((cat) => cat.id !== id);
       try {
-        eventService.saveCategories(this.categories);
+        EventService.saveCategories(this.categories);
       } catch (error) {
         this.errors.push(error.message);
         return;

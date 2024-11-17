@@ -134,7 +134,7 @@ import AuthService from "@/services/authService";
 import {store} from '@/store';
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
-import eventService from '@/services/EventService';
+import EventService from '@/services/eventService';
 
 export default {
   name: "AppNavbar",
@@ -165,7 +165,7 @@ export default {
   },
   methods: {
     loadCategories() {
-      this.categories = eventService.getCategories();
+      this.categories = EventService.getCategories();
     },
     toggleView() {
       store.toggleView();
@@ -190,7 +190,7 @@ export default {
       store.clearFilters();
     },
     seedEvents() {
-      eventService.seedData();
+      EventService.seedData();
       window.location.reload();
     }
   }

@@ -13,7 +13,7 @@
 import {Timeline} from "@knight-lab/timelinejs";
 import "@knight-lab/timelinejs/dist/css/timeline.css";
 
-import eventService from "@/services/EventService";
+import EventService from "@/services/eventService";
 import AuthService from "@/services/authService";
 import {store} from "@/store";
 import {nextTick} from "vue";
@@ -30,7 +30,7 @@ export default {
       return AuthService.isAuthenticated();
     },
     events() {
-      const events = eventService.getEventsWithCategories(store.filters);
+      const events = EventService.getEventsWithCategories(store.filters);
       return this.mapToTimelineEvent(events);
     },
   },

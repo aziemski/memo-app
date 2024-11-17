@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import eventService from "@/services/EventService";
+import EventService from "@/services/eventService";
 
 export default {
   data() {
@@ -84,7 +84,7 @@ export default {
   methods: {
     loadCategory() {
       const categoryId = parseInt(this.$route.params.id, 10);
-      const allCategories = eventService.getCategories();
+      const allCategories = EventService.getCategories();
       const foundCategory = allCategories.find((cat) => cat.id === categoryId);
 
       if (foundCategory) {
@@ -102,7 +102,7 @@ export default {
         return;
       }
 
-      const allCategories = eventService.getCategories();
+      const allCategories = EventService.getCategories();
       const updatedCategories = allCategories.map((cat) =>
           cat.id === this.category.id
               ? {...this.category, color: this.disableColor ? null : this.category.color}
@@ -110,7 +110,7 @@ export default {
       );
 
       try {
-        eventService.saveCategories(updatedCategories);
+        EventService.saveCategories(updatedCategories);
       } catch (error) {
         this.errors.push(error.message);
         return;
@@ -120,10 +120,10 @@ export default {
     },
 
     deleteCategory() {
-      const categories = eventService.getCategories()
+      const categories = EventService.getCategories()
           .filter((cat) => cat.id !== this.category.id);
       try {
-        eventService.saveCategories(categories);
+        EventService.saveCategories(categories);
       } catch (error) {
         this.errors.push(error.message);
         return;

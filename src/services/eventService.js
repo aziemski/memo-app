@@ -1,26 +1,24 @@
-class EventService {
-    constructor() {
-        this.eventKey = 'events';
-        this.categoryKey = 'categories';
-        this.eventCategoriesKey = 'eventCategories';
-    }
+const EventService = {
+    eventKey: "events",
+    categoryKey: "categories",
+    eventCategoriesKey: "eventCategories",
 
     getEvents() {
         return JSON.parse(localStorage.getItem(this.eventKey)) || [];
-    }
+    },
 
     saveEvents(events) {
         localStorage.setItem(this.eventKey, JSON.stringify(events));
-    }
+    },
 
     getCategories() {
         return JSON.parse(localStorage.getItem(this.categoryKey)) || [];
-    }
+    },
 
     saveCategories(categories) {
         const duplicateName = this.findFirstDuplicateCategoryName(categories);
         if (duplicateName) {
-            throw new Error(`Category: "${duplicateName}" already exist. Pick different name`);
+            throw new Error(`Category: "${duplicateName}" already exists. Pick a different name.`);
         }
 
         let eventCategories = this.getEventCategories();
@@ -29,47 +27,39 @@ class EventService {
         this.saveEventCategories(eventCategories);
 
         localStorage.setItem(this.categoryKey, JSON.stringify(categories));
-    }
+    },
 
     findFirstDuplicateCategoryName(categories) {
         const seenNames = new Set();
 
         for (const category of categories) {
-            const name = category.name;
-
-            if (seenNames.has(name)) {
+            if (seenNames.has(category.name)) {
                 return category.name;
             }
-
-            seenNames.add(name);
+            seenNames.add(category.name);
         }
 
         return null;
-    }
+    },
 
     getEventCategories() {
         return JSON.parse(localStorage.getItem(this.eventCategoriesKey)) || [];
-    }
+    },
 
     saveEventCategories(eventCategories) {
         localStorage.setItem(this.eventCategoriesKey, JSON.stringify(eventCategories));
-    }
+    },
 
     deleteEvent(eventId) {
-        const events = this.getEvents()
-            .filter(event => event.id !== eventId);
+        const events = this.getEvents().filter(event => event.id !== eventId);
         this.saveEvents(events);
-        this.deleteCategoriesForEvent(eventId);
-    }
 
-    deleteCategoriesForEvent(eventId) {
-        const eventCategories = this.getEventCategories()
-            .filter(conn => conn.eventId !== eventId);
+        const eventCategories = this.getEventCategories().filter(conn => conn.eventId !== eventId);
         this.saveEventCategories(eventCategories);
-    }
+    },
 
     getEventsWithCategories(filter = {}) {
-        const {selectedCategories = [], timeRange = {from: null, to: null}} = filter;
+        const { selectedCategories = [], timeRange = { from: null, to: null } } = filter;
         const events = this.getEvents();
         const categories = this.getCategories();
         const eventCategories = this.getEventCategories();
@@ -112,13 +102,11 @@ class EventService {
 
                 return true;
             });
-    }
-
+    },
 
     findEventWithCategories(eventId) {
-        return this.getEventsWithCategories()
-            .find(evt => evt.id === eventId) || {};
-    }
+        return this.getEventsWithCategories().find(evt => evt.id === eventId) || {};
+    },
 
     upsertEventWithCategories(eventWithCategories) {
         const events = this.getEvents();
@@ -137,7 +125,7 @@ class EventService {
             });
 
             eventWithCategories.categories.forEach(category => {
-                eventCategories.push({eventId: eventWithCategories.id, categoryId: category.id});
+                eventCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
             });
         } else {
             const eventIndex = events.findIndex(e => e.id === eventWithCategories.id);
@@ -154,18 +142,16 @@ class EventService {
 
             const filteredCategories = eventCategories.filter(ec => ec.eventId !== eventWithCategories.id);
             eventWithCategories.categories.forEach(category => {
-                filteredCategories.push({eventId: eventWithCategories.id, categoryId: category.id});
+                filteredCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
             });
 
             this.saveEventCategories(filteredCategories);
         }
 
         this.saveEvents(events);
-    }
-
+    },
 
     seedData() {
-
         const sampleEvents = [
             {
                 id: 1,
@@ -255,20 +241,27 @@ class EventService {
             {eventId: 1, categoryId: 1},
             {eventId: 2, categoryId: 2},
             {eventId: 3, categoryId: 3},
-            {eventId: 4, categoryId: 4},
+            {eventId: 3, categoryId: 4},
+            {eventId: 4, categoryId: 1},
+            {eventId: 4, categoryId: 6},
+            {eventId: 4, categoryId: 2},
             {eventId: 5, categoryId: 5},
+            {eventId: 5, categoryId: 1},
+            {eventId: 5, categoryId: 3},
             {eventId: 6, categoryId: 6},
             {eventId: 7, categoryId: 1},
+            {eventId: 7, categoryId: 4},
+            {eventId: 7, categoryId: 3},
+            {eventId: 7, categoryId: 5},
             {eventId: 8, categoryId: 4},
+            {eventId: 8, categoryId: 2},
             {eventId: 9, categoryId: 3},
         ];
 
         this.saveEvents(sampleEvents);
         this.saveCategories(sampleCategories);
         this.saveEventCategories(sampleEventCategories);
-    }
+    },
+};
 
-}
-
-const eventService = new EventService();
-export default eventService;
+export default EventService;

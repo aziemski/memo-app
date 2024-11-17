@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import eventService from "@/services/EventService";
+import EventService from "@/services/eventService";
 
 export default {
   props: {
@@ -143,7 +143,7 @@ export default {
   methods: {
     loadEvent() {
       const eventId = parseInt(this.$route.params.id);
-      const eventWithCategories = eventService.findEventWithCategories(eventId);
+      const eventWithCategories = EventService.findEventWithCategories(eventId);
       if (eventWithCategories) {
         this.event = {
           ...eventWithCategories,
@@ -152,7 +152,7 @@ export default {
       }
     },
     loadCategories() {
-      this.categories = eventService.getCategories();
+      this.categories = EventService.getCategories();
     },
     upsertEvent() {
       this.errors = [];
@@ -174,12 +174,12 @@ export default {
               this.categories.find((cat) => cat.id === catId)
           ),
         };
-        eventService.upsertEventWithCategories(updatedEvent);
+        EventService.upsertEventWithCategories(updatedEvent);
         this.$router.push({name: "HomePage"});
       }
     },
     deleteEvent() {
-      eventService.deleteEvent(this.event.id);
+      EventService.deleteEvent(this.event.id);
       this.$router.push({name: "HomePage"});
     },
     goBack() {

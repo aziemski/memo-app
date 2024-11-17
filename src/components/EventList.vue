@@ -49,7 +49,7 @@
 
 <script>
 import AuthService from "@/services/authService";
-import eventService from "@/services/EventService";
+import EventService from "@/services/eventService";
 import {store} from '@/store';
 
 export default {
@@ -64,7 +64,7 @@ export default {
       return AuthService.isAuthenticated();
     },
     events() {
-      return eventService.getEventsWithCategories(store.filters)
+      return EventService.getEventsWithCategories(store.filters)
     }
   },
   methods: {
