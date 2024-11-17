@@ -59,7 +59,7 @@ const EventService = {
     },
 
     getEventsWithCategories(filter = {}) {
-        const { selectedCategories = [], timeRange = { from: null, to: null } } = filter;
+        const {selectedCategories = [], timeRange = {from: null, to: null}} = filter;
         const events = this.getEvents();
         const categories = this.getCategories();
         const eventCategories = this.getEventCategories();
@@ -125,7 +125,7 @@ const EventService = {
             });
 
             eventWithCategories.categories.forEach(category => {
-                eventCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
+                eventCategories.push({eventId: eventWithCategories.id, categoryId: category.id});
             });
         } else {
             const eventIndex = events.findIndex(e => e.id === eventWithCategories.id);
@@ -142,7 +142,7 @@ const EventService = {
 
             const filteredCategories = eventCategories.filter(ec => ec.eventId !== eventWithCategories.id);
             eventWithCategories.categories.forEach(category => {
-                filteredCategories.push({ eventId: eventWithCategories.id, categoryId: category.id });
+                filteredCategories.push({eventId: eventWithCategories.id, categoryId: category.id});
             });
 
             this.saveEventCategories(filteredCategories);

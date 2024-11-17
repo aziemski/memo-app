@@ -8,6 +8,13 @@ const AuthService = {
     },
 
     async signup(userData) {
+        const newUser = await this.save(userData);
+        store.currentUser = newUser;
+
+        return newUser;
+    },
+
+    async save(userData) {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
 
         const newUser = {
@@ -18,11 +25,8 @@ const AuthService = {
         };
 
         store.users.push(newUser);
-        store.currentUser = newUser;
-
         return newUser;
     },
-
 
     login(email, password) {
         const user = store.users.find((u) => u.email === email);
