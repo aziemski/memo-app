@@ -98,6 +98,7 @@ import { useRoute } from 'vue-router'
 import EventService from '@/services/eventService'
 
 import { useAuthStore } from '@/stores/auth'
+import { useUIStore } from '@/stores/ui.js'
 
 export default {
   name: 'AppNavbar',
@@ -122,12 +123,15 @@ export default {
     authStore() {
       return useAuthStore()
     },
+    uiStore() {
+      return useUIStore()
+    },
     isListView() {
-      return store.isListView
+      return this.uiStore.isListView
     },
     isAuthenticated() {
       if (this.authStore.isAuthenticated()) {
-        AuthService.isAuthenticated();
+        AuthService.isAuthenticated()
       }
       return AuthService.isAuthenticated()
     },
@@ -137,7 +141,7 @@ export default {
       this.categories = EventService.getCategories()
     },
     toggleView() {
-      store.toggleView()
+      this.uiStore.toggleView()
     },
     addEvent() {
       this.$router.push({ name: 'AddEvent' })

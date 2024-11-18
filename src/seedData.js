@@ -1,5 +1,7 @@
 import AuthService from '@/services/authService'
 import EventService from '@/services/eventService'
+import { useAuthStore } from '@/stores/auth'
+import { useEventStore } from '@/stores/event.js'
 
 const SeedData = {
   seedEvents() {
@@ -120,6 +122,12 @@ const SeedData = {
     EventService.saveEvents(events)
     EventService.saveCategories(categories)
     EventService.saveEventCategories(eventCategories)
+
+    const eventStore = useEventStore()
+
+    eventStore.saveEvents(events)
+    eventStore.saveCategories(categories)
+    eventStore.saveEventCategories(eventCategories)
   },
 
   async seedUsers() {
@@ -131,8 +139,10 @@ const SeedData = {
       },
     ]
 
+    const authStore = useAuthStore()
     for (const user of users) {
       await AuthService.save(user)
+      await authStore.save(user)
     }
   },
 

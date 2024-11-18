@@ -3,7 +3,6 @@ import { reactive, watch } from 'vue'
 const savedState = JSON.parse(localStorage.getItem('store')) || {}
 
 export const store = reactive({
-  isListView: savedState.isListView !== undefined ? savedState.isListView : false,
   users: savedState.users !== undefined ? savedState.users : [],
 
   currentUser: savedState.currentUser !== undefined ? savedState.currentUser : null,
@@ -16,10 +15,6 @@ export const store = reactive({
       savedState.filters?.timeRange !== undefined
         ? savedState.filters.timeRange
         : { from: null, to: null },
-  },
-
-  toggleView() {
-    this.isListView = !this.isListView
   },
 
   setFilterSelectedCategories(value) {

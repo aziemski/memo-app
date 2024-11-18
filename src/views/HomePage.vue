@@ -10,10 +10,9 @@
 </template>
 
 <script>
-import { store } from '@/store'
-
 import EventTimeline from '@/components/EventTimeline.vue'
 import EventList from '@/components/EventList.vue'
+import { useUIStore } from '@/stores/ui.js'
 
 export default {
   components: {
@@ -22,8 +21,11 @@ export default {
   },
 
   computed: {
+    uiStore() {
+      return useUIStore()
+    },
     isListView() {
-      return store.isListView
+      return this.uiStore.isListView
     },
   },
 }

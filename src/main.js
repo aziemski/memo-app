@@ -2,16 +2,20 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router'
 
 import SeedData from './seedData'
 
-SeedData.initialSeed()
+const app = createApp(App)
 
 const pinia = createPinia()
-const app = createApp(App)
+pinia.use(piniaPluginPersistedState)
 
 app.use(pinia)
 app.use(router)
+
+SeedData.initialSeed()
+
 app.mount('#app')
