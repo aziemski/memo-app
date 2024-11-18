@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import AuthService from '@/services/authService'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   data() {
@@ -125,7 +125,11 @@ export default {
       errors: [],
     }
   },
-
+  computed: {
+    authStore() {
+      return useAuthStore()
+    },
+  },
   methods: {
     async handleSignup() {
       this.errors = []
@@ -136,7 +140,7 @@ export default {
       } else if (!this.validateEmail(this.form.email)) {
         this.errors.push('Invalid email format.')
       }
-      if (AuthService.isEmailTaken(this.form.email)) {
+      if (this.authStore.isEmailTaken(this.form.email)) {
         this.errors.push('Email is already registered.')
       }
       if (!this.form.password) {
@@ -149,7 +153,7 @@ export default {
       }
 
       if (this.errors.length === 0) {
-        await AuthService.signup(this.form)
+        await this.authStore.signup(this.form)
         this.$router.push('/')
       }
     },

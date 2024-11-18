@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import AuthService from '@/services/authService'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   data() {
@@ -74,10 +74,16 @@ export default {
     }
   },
 
+  computed: {
+    authStore() {
+      return useAuthStore()
+    },
+  },
+
   methods: {
     handleLogin() {
       this.errors = []
-      const success = AuthService.login(this.email, this.password)
+      const success = this.authStore.login(this.email, this.password)
       if (!success) {
         this.errors.push('Invalid email or password.')
       } else {

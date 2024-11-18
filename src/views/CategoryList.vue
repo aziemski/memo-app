@@ -97,7 +97,7 @@
 
 <script>
 import EventService from '@/services/eventService'
-import AuthService from '@/services/authService'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   data() {
@@ -113,6 +113,12 @@ export default {
     }
   },
 
+  computed: {
+    authStore() {
+      return useAuthStore()
+    },
+  },
+
   created() {
     this.auth()
     this.loadCategories()
@@ -120,7 +126,7 @@ export default {
 
   methods: {
     auth() {
-      if (!AuthService.isAuthenticated()) {
+      if (!this.authStore.isAuthenticated()) {
         this.$router.push('/login')
       }
     },

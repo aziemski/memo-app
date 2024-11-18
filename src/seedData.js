@@ -1,4 +1,3 @@
-import AuthService from '@/services/authService'
 import EventService from '@/services/eventService'
 import { useAuthStore } from '@/stores/auth'
 import { useEventStore } from '@/stores/event.js'
@@ -141,7 +140,6 @@ const SeedData = {
 
     const authStore = useAuthStore()
     for (const user of users) {
-      await AuthService.save(user)
       await authStore.save(user)
     }
   },

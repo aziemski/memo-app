@@ -46,10 +46,9 @@
 </template>
 
 <script>
-import AuthService from '@/services/authService'
 import EventService from '@/services/eventService'
-import { store } from '@/store'
 import { useUIStore } from '@/stores/ui.js'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   data() {
@@ -58,11 +57,14 @@ export default {
     }
   },
   computed: {
+    authStore() {
+      return useAuthStore()
+    },
     uiStore() {
       return useUIStore()
     },
     isAuthenticated() {
-      return AuthService.isAuthenticated()
+      return this.authStore.isAuthenticated()
     },
     events() {
       return EventService.getEventsWithCategories(this.uiStore.filters)

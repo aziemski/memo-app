@@ -12,10 +12,9 @@ import { Timeline } from '@knight-lab/timelinejs'
 import '@knight-lab/timelinejs/dist/css/timeline.css'
 
 import EventService from '@/services/eventService'
-import AuthService from '@/services/authService'
-import { store } from '@/store'
 import { nextTick } from 'vue'
 import { useUIStore } from '@/stores/ui.js'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   name: 'EventTimeline',
@@ -25,11 +24,14 @@ export default {
     }
   },
   computed: {
+    authStore() {
+      return useAuthStore()
+    },
     uiStore() {
       return useUIStore()
     },
     isAuthenticated() {
-      return AuthService.isAuthenticated()
+      return this.authStore.isAuthenticated()
     },
     events() {
       const events = EventService.getEventsWithCategories(this.uiStore.filters)

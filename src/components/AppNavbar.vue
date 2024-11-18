@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import AuthService from '@/services/authService'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import EventService from '@/services/eventService'
@@ -129,7 +128,7 @@ export default {
       return this.uiStore.isListView
     },
     isAuthenticated() {
-      return AuthService.isAuthenticated()
+      return this.authStore.isAuthenticated()
     },
   },
   methods: {

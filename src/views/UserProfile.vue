@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import AuthService from '@/services/authService'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   data() {
@@ -22,13 +22,19 @@ export default {
     }
   },
 
+  computed: {
+    authStore() {
+      return useAuthStore()
+    },
+  },
+
   created() {
     this.loadUser()
   },
 
   methods: {
     loadUser() {
-      const loggedUser = AuthService.loggedUser()
+      const loggedUser = this.authStore.loggedUser()
       if (loggedUser) {
         this.user = loggedUser
       } else {
@@ -46,7 +52,7 @@ export default {
     },
 
     logout() {
-      AuthService.logout()
+      this.authStore.logout()
       this.$router.push('/login')
     },
   },
