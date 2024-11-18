@@ -97,6 +97,8 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import EventService from '@/services/eventService'
 
+import { useAuthStore } from '@/stores/auth'
+
 export default {
   name: 'AppNavbar',
   setup() {
@@ -117,10 +119,16 @@ export default {
     this.loadCategories()
   },
   computed: {
+    authStore() {
+      return useAuthStore()
+    },
     isListView() {
       return store.isListView
     },
     isAuthenticated() {
+      if (this.authStore.isAuthenticated()) {
+        AuthService.isAuthenticated();
+      }
       return AuthService.isAuthenticated()
     },
   },
