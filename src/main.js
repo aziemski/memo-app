@@ -5,14 +5,17 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router'
-
 import SeedData from './seedData'
 
-const app = createApp(App)
+if (localStorage.getItem('app_version') !== __APP_VERSION__) {
+  localStorage.clear()
+  localStorage.setItem('app_version', __APP_VERSION__)
+}
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedState)
 
+const app = createApp(App)
 app.use(pinia)
 app.use(router)
 
