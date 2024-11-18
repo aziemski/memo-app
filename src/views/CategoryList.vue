@@ -96,8 +96,8 @@
 </template>
 
 <script>
-import EventService from '@/services/eventService'
 import { useAuthStore } from '@/stores/auth.js'
+import { useEventStore } from '@/stores/event.js'
 
 export default {
   data() {
@@ -117,6 +117,9 @@ export default {
     authStore() {
       return useAuthStore()
     },
+    eventStore() {
+      return useEventStore()
+    },
   },
 
   created() {
@@ -132,7 +135,7 @@ export default {
     },
 
     loadCategories() {
-      this.categories = EventService.getCategories()
+      this.categories = this.eventStore.getCategories()
     },
 
     addCategory() {
@@ -150,7 +153,7 @@ export default {
       }
 
       try {
-        EventService.saveCategories([...this.categories, newCategory])
+        this.eventStore.saveCategories([...this.categories, newCategory])
       } catch (error) {
         this.errors.push(error.message)
         return
@@ -165,7 +168,7 @@ export default {
     deleteCategory(id) {
       this.categories = this.categories.filter((cat) => cat.id !== id)
       try {
-        EventService.saveCategories(this.categories)
+        this.eventStore.saveCategories(this.categories)
       } catch (error) {
         this.errors.push(error.message)
         return

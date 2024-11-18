@@ -94,8 +94,8 @@
 </template>
 
 <script>
-import EventService from '@/services/eventService'
 import { useAuthStore } from '@/stores/auth.js'
+import { useEventStore } from '@/stores/event.js'
 
 export default {
   props: {
@@ -124,6 +124,9 @@ export default {
     authStore() {
       return useAuthStore()
     },
+    eventStore() {
+      return useEventStore()
+    },
   },
 
   created() {
@@ -143,7 +146,7 @@ export default {
 
     loadEvent() {
       const eventId = parseInt(this.$route.params.id)
-      const eventWithCategories = EventService.findEventWithCategories(eventId)
+      const eventWithCategories = this.eventStore.findEventWithCategories(eventId)
 
       if (!eventWithCategories) {
         this.errors.push('Event not found.')
@@ -159,7 +162,7 @@ export default {
     },
 
     loadCategories() {
-      this.categories = EventService.getCategories()
+      this.categories = this.eventStore.getCategories()
     },
 
     upsertEvent() {
@@ -182,13 +185,13 @@ export default {
             this.categories.find((cat) => cat.id === catId),
           ),
         }
-        EventService.upsertEventWithCategories(updatedEvent)
+        this.eventStore.upsertEventWithCategories(updatedEvent)
         this.$router.push({ name: 'HomePage' })
       }
     },
 
     deleteEvent() {
-      EventService.deleteEvent(this.event.id)
+      this.eventStore.deleteEvent(this.event.id)
       this.$router.push({ name: 'HomePage' })
     },
 

@@ -19,6 +19,9 @@ export const useEventStore = defineStore('event', {
       }
       return null
     },
+    getCategories() {
+      return this.categories
+    },
     saveCategories(categories) {
       const duplicateName = this.findFirstDuplicateCategoryName(categories)
       if (duplicateName) {

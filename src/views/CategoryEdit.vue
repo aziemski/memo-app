@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import EventService from '@/services/eventService'
 import { useAuthStore } from '@/stores/auth.js'
+import { useEventStore } from '@/stores/event.js'
 
 export default {
   data() {
@@ -80,6 +80,9 @@ export default {
     authStore() {
       return useAuthStore()
     },
+    eventStore() {
+      return useEventStore()
+    },
   },
   created() {
     this.auth()
@@ -94,7 +97,7 @@ export default {
 
     loadCategory() {
       const categoryId = parseInt(this.$route.params.id, 10)
-      const allCategories = EventService.getCategories()
+      const allCategories = this.eventStore.getCategories()
       const foundCategory = allCategories.find((cat) => cat.id === categoryId)
 
       if (foundCategory) {
@@ -113,7 +116,7 @@ export default {
         return
       }
 
-      const allCategories = EventService.getCategories()
+      const allCategories = this.eventStore.getCategories()
       const updatedCategories = allCategories.map((cat) =>
         cat.id === this.category.id
           ? {
@@ -124,7 +127,7 @@ export default {
       )
 
       try {
-        EventService.saveCategories(updatedCategories)
+        this.eventStore.saveCategories(updatedCategories)
       } catch (error) {
         this.errors.push(error.message)
         return
@@ -134,9 +137,11 @@ export default {
     },
 
     deleteCategory() {
-      const categories = EventService.getCategories().filter((cat) => cat.id !== this.category.id)
+      const categories = this.eventStore
+        .getCategories()
+        .filter((cat) => cat.id !== this.category.id)
       try {
-        EventService.saveCategories(categories)
+        this.eventStore.saveCategories(categories)
       } catch (error) {
         this.errors.push(error.message)
         return

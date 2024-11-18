@@ -93,10 +93,10 @@
 <script>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import EventService from '@/services/eventService'
 
 import { useAuthStore } from '@/stores/auth'
 import { useUIStore } from '@/stores/ui.js'
+import { useEventStore } from '@/stores/event.js'
 
 export default {
   name: 'AppNavbar',
@@ -121,6 +121,9 @@ export default {
     authStore() {
       return useAuthStore()
     },
+    eventStore() {
+      return useEventStore()
+    },
     uiStore() {
       return useUIStore()
     },
@@ -133,7 +136,7 @@ export default {
   },
   methods: {
     loadCategories() {
-      this.categories = EventService.getCategories()
+      this.categories = this.eventStore.getCategories()
       this.selectedCategories = this.uiStore.filters.selectedCategories
       this.timeRange = { ...this.uiStore.filters.timeRange }
     },

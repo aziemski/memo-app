@@ -1,4 +1,3 @@
-import EventService from '@/services/eventService'
 import { useAuthStore } from '@/stores/auth'
 import { useEventStore } from '@/stores/event.js'
 
@@ -117,10 +116,6 @@ const SeedData = {
       { eventId: 8, categoryId: 2 },
       { eventId: 9, categoryId: 3 },
     ]
-
-    EventService.saveEvents(events)
-    EventService.saveCategories(categories)
-    EventService.saveEventCategories(eventCategories)
 
     const eventStore = useEventStore()
 
