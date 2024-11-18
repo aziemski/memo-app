@@ -1,14 +1,11 @@
 # memo-app
 
-This template should help get you started developing with Vue 3 in Vite.
+Memo App is a single-page application written in Vue 3 that allows users to manage events  
+entirely on the client side. It is a fully local application with no backend,
+leveraging the browser's storage for data persistence. 
+The app provides CRUD operations for events and simulates basic authentication functionality.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+Visit the demo at https://memo-app.adrianz.xyz/
 
 ## Project Setup
 

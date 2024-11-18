@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth.js'
 import { useEventStore } from '@/stores/event.js'
 
 const SeedData = {
