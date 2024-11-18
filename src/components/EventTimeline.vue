@@ -15,6 +15,7 @@ import EventService from '@/services/eventService'
 import AuthService from '@/services/authService'
 import { store } from '@/store'
 import { nextTick } from 'vue'
+import { useUIStore } from '@/stores/ui.js'
 
 export default {
   name: 'EventTimeline',
@@ -24,11 +25,14 @@ export default {
     }
   },
   computed: {
+    uiStore() {
+      return useUIStore()
+    },
     isAuthenticated() {
       return AuthService.isAuthenticated()
     },
     events() {
-      const events = EventService.getEventsWithCategories(store.filters)
+      const events = EventService.getEventsWithCategories(this.uiStore.filters)
       return this.mapToTimelineEvent(events)
     },
   },

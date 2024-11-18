@@ -92,7 +92,6 @@
 
 <script>
 import AuthService from '@/services/authService'
-import { store } from '@/store'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import EventService from '@/services/eventService'
@@ -112,8 +111,8 @@ export default {
   data() {
     return {
       categories: [],
-      selectedCategories: store.filters.selectedCategories,
-      timeRange: { ...store.filters.timeRange },
+      selectedCategories: [],
+      timeRange: { from: null, to: null },
     }
   },
   created() {
@@ -130,15 +129,14 @@ export default {
       return this.uiStore.isListView
     },
     isAuthenticated() {
-      if (this.authStore.isAuthenticated()) {
-        AuthService.isAuthenticated()
-      }
       return AuthService.isAuthenticated()
     },
   },
   methods: {
     loadCategories() {
       this.categories = EventService.getCategories()
+      this.selectedCategories = this.uiStore.filters.selectedCategories
+      this.timeRange = { ...this.uiStore.filters.timeRange }
     },
     toggleView() {
       this.uiStore.toggleView()
@@ -147,13 +145,13 @@ export default {
       this.$router.push({ name: 'AddEvent' })
     },
     applyFilters() {
-      store.setFilterSelectedCategories(this.selectedCategories)
-      store.setFilterTimeRange(this.timeRange)
+      this.uiStore.setFilterSelectedCategories(this.selectedCategories)
+      this.uiStore.setFilterTimeRange(this.timeRange)
     },
     clearFilters() {
       this.selectedCategories = []
       this.timeRange = { from: null, to: null }
-      store.clearFilters()
+      this.uiStore.clearFilters()
     },
   },
 }

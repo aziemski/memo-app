@@ -49,6 +49,7 @@
 import AuthService from '@/services/authService'
 import EventService from '@/services/eventService'
 import { store } from '@/store'
+import { useUIStore } from '@/stores/ui.js'
 
 export default {
   data() {
@@ -57,11 +58,14 @@ export default {
     }
   },
   computed: {
+    uiStore() {
+      return useUIStore()
+    },
     isAuthenticated() {
       return AuthService.isAuthenticated()
     },
     events() {
-      return EventService.getEventsWithCategories(store.filters)
+      return EventService.getEventsWithCategories(this.uiStore.filters)
     },
   },
   methods: {
