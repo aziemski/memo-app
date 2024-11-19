@@ -16,4 +16,12 @@ export default [
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   skipFormatting,
+
+  {
+    languageOptions: {
+      globals: {
+        __APP_VERSION__: 'readonly',
+      },
+    },
+  },
 ]

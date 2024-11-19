@@ -6,6 +6,7 @@ export const useUIStore = defineStore('ui', {
     filters: {
       selectedCategories: [],
       timeRange: { from: null, to: null },
+      sortingOrder: 'asc',
     },
   }),
   actions: {
@@ -18,9 +19,13 @@ export const useUIStore = defineStore('ui', {
     setFilterTimeRange(value) {
       this.filters.timeRange = value || { from: null, to: null }
     },
+    setSortingOrder(value) {
+      this.filters.sortingOrder = value || 'asc'
+    },
     clearFilters() {
       this.filters.selectedCategories = []
       this.filters.timeRange = { from: null, to: null }
+      this.filters.sortingOrder = 'asc'
     },
   },
   persist: {

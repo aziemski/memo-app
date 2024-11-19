@@ -43,8 +43,12 @@ export const useEventStore = defineStore('event', {
       this.events = this.events.filter((event) => event.id !== eventId)
       this.eventCategories = this.eventCategories.filter((conn) => conn.eventId !== eventId)
     },
-    getEventsWithCategories(filter = {}) {
-      const { selectedCategories = [], timeRange = { from: null, to: null } } = filter
+    getEventsWithCategories(filterParams = {}) {
+      const {
+        selectedCategories = [],
+        timeRange = { from: null, to: null },
+        sortingOrder = 'asc',
+      } = filterParams
 
       return this.events
         .map((event) => {
@@ -83,6 +87,18 @@ export const useEventStore = defineStore('event', {
           }
 
           return true
+        })
+        .sort((a, b) => {
+          const lhs = new Date(a.startDate)
+          const rhs = new Date(b.startDate)
+
+          if (sortingOrder === 'asc') {
+            return lhs - rhs
+          } else if (sortingOrder === 'desc') {
+            return rhs - lhs
+          }
+
+          return 0
         })
     },
     findEventWithCategories(eventId) {

@@ -35,6 +35,9 @@
               data-bs-auto-close="outside"
               style="min-width: 200px"
             >
+              <li>
+                <label class="form-label">Categories:</label>
+              </li>
               <li v-for="category in categories" :key="category.id" class="dropdown-item">
                 <div class="form-check">
                   <input
@@ -52,6 +55,9 @@
 
               <li class="dropdown-divider"></li>
               <li>
+                <label class="form-label">Time Rage:</label>
+              </li>
+              <li>
                 <div class="mb-2">
                   <label class="form-label" for="fromDate">From</label>
                   <input id="fromDate" v-model="timeRange.from" class="form-control" type="date" />
@@ -59,6 +65,33 @@
                 <div>
                   <label class="form-label" for="toDate">To</label>
                   <input id="toDate" v-model="timeRange.to" class="form-control" type="date" />
+                </div>
+              </li>
+
+              <li class="dropdown-divider"></li>
+              <li>
+                <label class="form-label">Sort By Date:</label>
+                <div>
+                  <div class="form-check">
+                    <input
+                      id="sortAsc"
+                      v-model="sortingOrder"
+                      class="form-check-input"
+                      type="radio"
+                      value="asc"
+                    />
+                    <label for="sortAsc" class="form-check-label">Ascending</label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      id="sortDesc"
+                      v-model="sortingOrder"
+                      class="form-check-input"
+                      type="radio"
+                      value="desc"
+                    />
+                    <label for="sortDesc" class="form-check-label">Descending</label>
+                  </div>
                 </div>
               </li>
 
@@ -112,6 +145,7 @@ export default {
       categories: [],
       selectedCategories: [],
       timeRange: { from: null, to: null },
+      sortingOrder: 'asc',
     }
   },
   created() {
@@ -139,6 +173,7 @@ export default {
       this.categories = this.eventStore.getCategories()
       this.selectedCategories = this.uiStore.filters.selectedCategories
       this.timeRange = { ...this.uiStore.filters.timeRange }
+      this.sortingOrder = this.uiStore.filters.sortingOrder
     },
     toggleView() {
       this.uiStore.toggleView()
@@ -149,10 +184,12 @@ export default {
     applyFilters() {
       this.uiStore.setFilterSelectedCategories(this.selectedCategories)
       this.uiStore.setFilterTimeRange(this.timeRange)
+      this.uiStore.setSortingOrder(this.sortingOrder)
     },
     clearFilters() {
       this.selectedCategories = []
       this.timeRange = { from: null, to: null }
+      this.sortingOrder = 'asc'
       this.uiStore.clearFilters()
     },
   },
